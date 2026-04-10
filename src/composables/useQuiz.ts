@@ -4,7 +4,7 @@ import archetypesData from '../data/archetypes.json'
 import charactersData from '../data/characters.json'
 import questionsData from '../data/questions.json'
 import type { Archetype, CharacterMatch, Question, QuizRecord, QuizResult } from '../types/quiz'
-import { calculateQuizResult } from '../utils/quizEngine'
+import { calculateQuizResult, createDebugQuizResult } from '../utils/quizEngine'
 import { clearLastRecord, loadLastRecord, saveLastRecord } from '../utils/storage'
 
 const questions = questionsData as Question[]
@@ -105,6 +105,7 @@ export function useQuiz() {
   return {
     questions,
     archetypes,
+    characters,
     state: readonly(state),
     currentQuestion,
     selectedOptionIndex,
@@ -122,5 +123,12 @@ export function useQuiz() {
     resetQuiz,
     finalizeQuiz,
     resumeLastResult,
+    createDebugResult: (mbtiCode: string, preferredCharacterId?: string | null): QuizResult | null =>
+      createDebugQuizResult({
+        mbtiCode,
+        archetypes,
+        characters,
+        preferredCharacterId,
+      }),
   }
 }

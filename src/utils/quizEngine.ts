@@ -98,6 +98,15 @@ export const ROLE_MAPPING: Record<string, { name: string; description: string }>
   'ESFP': { name: 'Explorers', description: 'Explorers are utilitarian, practical, and spontaneous, shining in situations that require quick reaction.' }
 }
 
+const MBTI_PATTERN = /^[EI][SN][TF][JP]$/
+
+const DEFAULT_DEBUG_PERCENTAGES: Record<DimensionPair, number> = {
+  'E_I': 78,
+  'S_N': 74,
+  'T_F': 72,
+  'J_P': 76,
+}
+
 export function calculateQuizResult({
   answers,
   questions,
@@ -189,6 +198,148 @@ export function calculateQuizResult({
     tags: [matchedArchetype.narrativeRole, ...matchedArchetype.tags].slice(0, 6),
     matchScore,
     characterMatches: charMatches,
+    featuredCharacter,
+  }
+}
+
+export function normalizeMbtiCode(mbtiCode: string) {
+  const normalized = mbtiCode.trim().toUpperCase()
+  return MBTI_PATTERN.test(normalized) ? normalized : null
+}
+
+export function buildScoresFromMbtiCode(
+  mbtiCode: string,
+  percentages: Partial<Record<DimensionPair, number>> = {},
+) {
+  const normalized = normalizeMbtiCode(mbtiCode)
+
+  if (!normalized) {
+    return null
+  }
+
+  const pairs: DimensionPair[] = ['E_I', 'S_N', 'T_F', 'J_P']
+
+  return pairs.reduce((acc, pair, index) => {
+    const dominant = normalized[index] as MBTILetter
+    const percentage = Math.max(50, Math.min(99, Math.round(percentages[pair] ?? DEFAULT_DEBUG_PERCENTAGES[pair])))
+    const sign = dominant === DIMENSION_LETTERS[pair][0] ? 1 : -1
+
+    acc[pair] = {
+      pair,
+      dominant,
+      percentage,
+      score: sign * (percentage - 50),
+    }
+
+    return acc
+  }, {} as Record<DimensionPair, DimensionScore>)
+}
+
+export function resolveArchetypeForMbti(mbtiCode: string, archetypes: Archetype[]) {
+  const normalized = normalizeMbtiCode(mbtiCode)
+
+  if (!normalized) {
+    return null
+  }
+
+  const matchedArchetypeId = TYPE_TO_ARCHETYPE[normalized]
+  return (
+    archetypes.find((item) => item.id === matchedArchetypeId) ??
+    archetypes.find((item) => item.id === 'luminous-lead') ??
+    null
+  )
+}
+
+export function rankCharactersForMbti({
+  characters,
+  mbtiCode,
+  preferredCharacterId,
+}: {
+  characters: CharacterMatch[]
+  mbtiCode: string
+  preferredCharacterId?: string | null
+}) {
+  const normalized = normalizeMbtiCode(mbtiCode)
+
+  if (!normalized) {
+    return []
+  }
+
+  const matchedArchetypeId = TYPE_TO_ARCHETYPE[normalized]
+  const preferredId = preferredCharacterId?.trim().toLowerCase()
+  const ranked = rankCharacters({
+    characters,
+    finalCode: normalized,
+    matchedArchetypeId,
+  })
+
+  if (!preferredId) {
+    return ranked
+  }
+
+  return [...ranked].sort((left, right) => {
+    if (left.id === preferredId && right.id !== preferredId) {
+      return -1
+    }
+
+    if (right.id === preferredId && left.id !== preferredId) {
+      return 1
+    }
+
+    return 0
+  })
+}
+
+export function createDebugQuizResult({
+  mbtiCode,
+  archetypes,
+  characters,
+  preferredCharacterId,
+}: {
+  mbtiCode: string
+  archetypes: Archetype[]
+  characters: CharacterMatch[]
+  preferredCharacterId?: string | null
+}): QuizResult | null {
+  const normalized = normalizeMbtiCode(mbtiCode)
+
+  if (!normalized) {
+    return null
+  }
+
+  const matchedArchetype = resolveArchetypeForMbti(normalized, archetypes)
+
+  if (!matchedArchetype) {
+    return null
+  }
+
+  const rankedCharacters = rankCharactersForMbti({
+    characters,
+    mbtiCode: normalized,
+    preferredCharacterId,
+  }).slice(0, 5)
+  const featuredCharacter = rankedCharacters[0] ?? null
+  const scores = buildScoresFromMbtiCode(normalized)
+
+  if (!scores) {
+    return null
+  }
+
+  const matchScore = calculateMatchScore({
+    scores,
+    finalCode: normalized,
+    featuredCharacter,
+    matchedArchetypeId: matchedArchetype.id,
+  })
+
+  return {
+    code: featuredCharacter?.code ?? normalized,
+    mbtiCode: normalized,
+    scores,
+    archetype: matchedArchetype,
+    tags: [matchedArchetype.narrativeRole, ...matchedArchetype.tags].slice(0, 6),
+    matchScore,
+    characterMatches: rankedCharacters,
     featuredCharacter,
   }
 }

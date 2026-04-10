@@ -1,25 +1,56 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import SharePoster from '../components/SharePoster.vue'
 import { useShare } from '../composables/useShare'
 import { useQuiz } from '../composables/useQuiz'
+import { normalizeMbtiCode } from '../utils/quizEngine'
 
+const route = useRoute()
 const router = useRouter()
 const quiz = useQuiz()
-const result = computed(() => quiz.latestResult.value)
+const debugMbtiOptions = [
+  'INTJ', 'INTP', 'ENTJ', 'ENTP',
+  'INFJ', 'INFP', 'ENFJ', 'ENFP',
+  'ISTJ', 'ISFJ', 'ESTJ', 'ESFJ',
+  'ISTP', 'ISFP', 'ESTP', 'ESFP',
+]
+const debugType = ref('')
+const debugCharacterId = ref('')
+const activeDebugResult = ref<ReturnType<typeof quiz.createDebugResult>>(null)
+const showDebugPanel = computed(
+  () => import.meta.env.DEV || route.query.debug === '1' || !!route.query.type || !!route.query.character,
+)
+const debugCharacterOptions = computed(() =>
+  [...quiz.characters].sort((left, right) => left.name.localeCompare(right.name, 'zh-Hans-CN')),
+)
+const result = computed(() => activeDebugResult.value ?? quiz.latestResult.value)
 const posterRef = ref<{ rootEl: HTMLElement | null } | null>(null)
 const isCharacterImageBroken = ref(false)
 const share = useShare()
 
 onMounted(() => {
   quiz.resumeLastResult()
+  syncDebugStateFromRoute()
+  applyDebugResultFromRoute()
 
-  if (!quiz.latestResult.value) {
+  if (!result.value) {
     void router.replace('/quiz')
   }
 })
+
+watch(
+  () => [route.query.type, route.query.character],
+  () => {
+    syncDebugStateFromRoute()
+    applyDebugResultFromRoute()
+
+    if (!result.value) {
+      void router.replace('/quiz')
+    }
+  },
+)
 
 function retry() {
   quiz.resetQuiz()
@@ -45,6 +76,62 @@ function hideBrokenImage(event: Event) {
   const img = event.currentTarget as HTMLImageElement | null
   if (!img) return
   img.style.display = 'none'
+}
+
+function syncDebugStateFromRoute() {
+  debugType.value = normalizeMbtiCode(String(route.query.type ?? '')) ?? ''
+  debugCharacterId.value = String(route.query.character ?? '').trim().toLowerCase()
+}
+
+function applyDebugResultFromRoute() {
+  const normalizedType = normalizeMbtiCode(String(route.query.type ?? ''))
+  const requestedCharacterId = String(route.query.character ?? '').trim().toLowerCase()
+
+  if (!normalizedType && !requestedCharacterId) {
+    activeDebugResult.value = null
+    return
+  }
+
+  const preferredCharacter = requestedCharacterId
+    ? quiz.characters.find((item) => item.id === requestedCharacterId)
+    : null
+  const mbtiCode = normalizedType ?? preferredCharacter?.matchCode ?? ''
+
+  activeDebugResult.value = mbtiCode
+    ? quiz.createDebugResult(mbtiCode, preferredCharacter?.id ?? requestedCharacterId)
+    : null
+}
+
+function applyDebugSelection() {
+  const nextQuery: Record<string, string> = {}
+  const normalizedType = normalizeMbtiCode(debugType.value)
+  const normalizedCharacterId = debugCharacterId.value.trim().toLowerCase()
+
+  if (showDebugPanel.value) {
+    nextQuery.debug = '1'
+  }
+
+  if (normalizedType) {
+    nextQuery.type = normalizedType
+  }
+
+  if (normalizedCharacterId) {
+    nextQuery.character = normalizedCharacterId
+  }
+
+  void router.replace({
+    name: 'result',
+    query: nextQuery,
+  })
+}
+
+function clearDebugSelection() {
+  debugType.value = ''
+  debugCharacterId.value = ''
+  void router.replace({
+    name: 'result',
+    query: showDebugPanel.value ? { debug: '1' } : {},
+  })
 }
 
 const primaryCharacterImage = computed(() => {
@@ -146,6 +233,44 @@ function getHandlePosition(traitId: TraitDimension, leftCode: string) {
       
       <!-- Content / Data Visualization -->
       <div class="md:w-2/3 p-8 lg:p-12">
+        <section v-if="showDebugPanel" class="mb-8 rounded-2xl border border-dashed border-[#8ca260] bg-[#f7fbf5] p-5">
+          <div class="flex flex-col gap-4 md:flex-row md:items-end">
+            <div class="flex-1">
+              <label class="mb-2 block text-sm font-bold text-gray-700">调试 MBTI</label>
+              <select v-model="debugType" class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700">
+                <option value="">跟随最近结果 / 角色默认类型</option>
+                <option v-for="code in debugMbtiOptions" :key="code" :value="code">{{ code }}</option>
+              </select>
+            </div>
+            <div class="flex-1">
+              <label class="mb-2 block text-sm font-bold text-gray-700">调试角色</label>
+              <select v-model="debugCharacterId" class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700">
+                <option value="">不指定角色</option>
+                <option v-for="character in debugCharacterOptions" :key="character.id" :value="character.id">
+                  {{ character.name }} · {{ character.matchCode }}
+                </option>
+              </select>
+            </div>
+            <button
+              type="button"
+              class="rounded-xl bg-[#8ca260] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#799149]"
+              @click="applyDebugSelection"
+            >
+              跳转调试结果
+            </button>
+            <button
+              type="button"
+              class="rounded-xl border border-gray-200 bg-white px-5 py-3 text-sm font-bold text-gray-600 transition-colors hover:border-gray-300 hover:text-gray-800"
+              @click="clearDebugSelection"
+            >
+              清除调试
+            </button>
+          </div>
+          <p class="mt-3 text-sm text-gray-500">
+            支持直接访问 `#/result?debug=1&type=INTJ` 或 `#/result?debug=1&character=hatsune-miku`。
+          </p>
+        </section>
+
         <h3 class="text-2xl font-black text-gray-800 mb-8 flex items-center border-b-2 border-gray-100 pb-4">
           <i class="fa-solid fa-chart-pie mr-3 text-gray-400"></i>你的特质倾向
         </h3>
