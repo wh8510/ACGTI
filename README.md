@@ -16,6 +16,12 @@
 - **本地存储** — 自动保存最近一次测试结果
 - **响应式设计** — 适配桌面端与移动端
 
+## 致谢
+
+- **界面风格** — 参考自 [16personalities](https://www.16personalities.com/) 的扁平化设计与专业测评体验。
+- **项目启发** — 受到开源项目 [UnluckyNinja/SBTI-test](https://github.com/UnluckyNinja/SBTI-test) 的启发，致力于二次元人格倾向的数字化表达。
+- **视觉素材** — 项目中的所有角色立绘与背景图片均由 **ChatGPT (DALL·E)** 生成，旨在提供统一的二次元视觉风格。
+
 ## 技术栈
 
 - Vue 3 + Composition API
