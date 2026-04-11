@@ -2,11 +2,13 @@ import type {
   Archetype,
   ArchetypeId,
   CharacterMatch,
-  Question,
-  QuizResult,
+  DimensionId,
   DimensionPair,
   DimensionScore,
   MBTILetter,
+  Question,
+  QuestionArchetypeWeightId,
+  QuizResult,
 } from '../types/quiz'
 
 const DIMENSION_LETTERS: Record<DimensionPair, [MBTILetter, MBTILetter]> = {
@@ -34,6 +36,31 @@ const TYPE_TO_ARCHETYPE: Record<string, ArchetypeId> = {
   ESTP: 'chaos-spark',
   ESFP: 'chaos-spark',
 }
+
+const ROLE_TO_ARCHETYPE: Record<QuestionArchetypeWeightId, ArchetypeId> = {
+  hero: 'luminous-lead',
+  strategist: 'shadow-strategist',
+  guardian: 'moonlit-guardian',
+  lonewolf: 'icebound-observer',
+  healer: 'gentle-healer',
+  berserker: 'chaos-spark',
+  trickster: 'trickster-orbit',
+  ruler: 'oathbound-captain',
+}
+
+const QUESTION_WEIGHT_FALLBACKS: Record<DimensionPair, Partial<Record<QuestionArchetypeWeightId, number>>> = {
+  'E_I': { hero: 2, trickster: 2, healer: 1, lonewolf: -2, strategist: -1 },
+  'S_N': { strategist: 2, trickster: 2, healer: 1, ruler: -1, guardian: -1 },
+  'T_F': { strategist: 2, ruler: 1, healer: -2, guardian: -1, berserker: 1 },
+  'J_P': { ruler: 2, guardian: 1, strategist: 1, trickster: -2, berserker: -1 },
+}
+
+const VECTOR_AXES: DimensionId[] = ['expression', 'temperature', 'judgement', 'order', 'agency', 'aura']
+const ARCHETYPE_IDS = Object.values(ROLE_TO_ARCHETYPE)
+
+const MBTI_WEIGHT = 0.35
+const ARCHETYPE_WEIGHT = 0.4
+const VECTOR_WEIGHT = 0.25
 
 // 16personalities 风格的维度标签配置
 export const TRAIT_CONFIG = {
@@ -71,41 +98,36 @@ export const TRAIT_CONFIG = {
   }
 }
 
-// 角色分类映射（基于 MBTI 类型）
 export const ROLE_MAPPING: Record<string, { name: string; description: string }> = {
-  // Analysts (INTJ, INTP, ENTJ, ENTP)
-  'INTJ': { name: 'Analysts', description: 'Analysts are imaginative and strategic thinkers, with a plan for everything.' },
-  'INTP': { name: 'Analysts', description: 'Analysts are imaginative and strategic thinkers, with a plan for everything.' },
-  'ENTJ': { name: 'Analysts', description: 'Analysts are imaginative and strategic thinkers, with a plan for everything.' },
-  'ENTP': { name: 'Analysts', description: 'Analysts are imaginative and strategic thinkers, with a plan for everything.' },
-
-  // Diplomats (INFJ, INFP, ENFJ, ENFP)
-  'INFJ': { name: 'Diplomats', description: 'Diplomats are empathetic and principled, with a deep concern for others.' },
-  'INFP': { name: 'Diplomats', description: 'Diplomats are empathetic and principled, with a deep concern for others.' },
-  'ENFJ': { name: 'Diplomats', description: 'Diplomats are empathetic and principled, with a deep concern for others.' },
-  'ENFP': { name: 'Diplomats', description: 'Diplomats are empathetic and principled, with a deep concern for others.' },
-
-  // Sentinels (ISTJ, ISFJ, ESTJ, ESFJ)
-  'ISTJ': { name: 'Sentinels', description: 'Sentinels are cooperative and practical, bringing stability and order.' },
-  'ISFJ': { name: 'Sentinels', description: 'Sentinels are cooperative and practical, bringing stability and order.' },
-  'ESTJ': { name: 'Sentinels', description: 'Sentinels are cooperative and practical, bringing stability and order.' },
-  'ESFJ': { name: 'Sentinels', description: 'Sentinels are cooperative and practical, bringing stability and order.' },
-
-  // Explorers (ISTP, ISFP, ESTP, ESFP)
-  'ISTP': { name: 'Explorers', description: 'Explorers are utilitarian, practical, and spontaneous, shining in situations that require quick reaction.' },
-  'ISFP': { name: 'Explorers', description: 'Explorers are utilitarian, practical, and spontaneous, shining in situations that require quick reaction.' },
-  'ESTP': { name: 'Explorers', description: 'Explorers are utilitarian, practical, and spontaneous, shining in situations that require quick reaction.' },
-  'ESFP': { name: 'Explorers', description: 'Explorers are utilitarian, practical, and spontaneous, shining in situations that require quick reaction.' }
+  INTJ: { name: 'Analysts', description: 'Analysts are imaginative and strategic thinkers, with a plan for everything.' },
+  INTP: { name: 'Analysts', description: 'Analysts are imaginative and strategic thinkers, with a plan for everything.' },
+  ENTJ: { name: 'Analysts', description: 'Analysts are imaginative and strategic thinkers, with a plan for everything.' },
+  ENTP: { name: 'Analysts', description: 'Analysts are imaginative and strategic thinkers, with a plan for everything.' },
+  INFJ: { name: 'Diplomats', description: 'Diplomats are empathetic and principled, with a deep concern for others.' },
+  INFP: { name: 'Diplomats', description: 'Diplomats are empathetic and principled, with a deep concern for others.' },
+  ENFJ: { name: 'Diplomats', description: 'Diplomats are empathetic and principled, with a deep concern for others.' },
+  ENFP: { name: 'Diplomats', description: 'Diplomats are empathetic and principled, with a deep concern for others.' },
+  ISTJ: { name: 'Sentinels', description: 'Sentinels are cooperative and practical, bringing stability and order.' },
+  ISFJ: { name: 'Sentinels', description: 'Sentinels are cooperative and practical, bringing stability and order.' },
+  ESTJ: { name: 'Sentinels', description: 'Sentinels are cooperative and practical, bringing stability and order.' },
+  ESFJ: { name: 'Sentinels', description: 'Sentinels are cooperative and practical, bringing stability and order.' },
+  ISTP: { name: 'Explorers', description: 'Explorers are utilitarian, practical, and spontaneous, shining in situations that require quick reaction.' },
+  ISFP: { name: 'Explorers', description: 'Explorers are utilitarian, practical, and spontaneous, shining in situations that require quick reaction.' },
+  ESTP: { name: 'Explorers', description: 'Explorers are utilitarian, practical, and spontaneous, shining in situations that require quick reaction.' },
+  ESFP: { name: 'Explorers', description: 'Explorers are utilitarian, practical, and spontaneous, shining in situations that require quick reaction.' }
 }
 
 const MBTI_PATTERN = /^[EI][SN][TF][JP]$/
-
 const DEFAULT_DEBUG_PERCENTAGES: Record<DimensionPair, number> = {
   'E_I': 78,
   'S_N': 74,
   'T_F': 72,
   'J_P': 76,
 }
+
+type DirectionalMax = Record<DimensionPair, { positive: number; negative: number }>
+type ArchetypeAccumulator = Record<ArchetypeId, number>
+type UserVector = Record<DimensionId, number>
 
 export function calculateQuizResult({
   answers,
@@ -121,24 +143,47 @@ export function calculateQuizResult({
   const rawScores: Record<DimensionPair, number> = {
     'E_I': 0, 'S_N': 0, 'T_F': 0, 'J_P': 0
   }
-  const directionalMaxScores: Record<DimensionPair, { positive: number; negative: number }> = {
+  const directionalMaxScores: DirectionalMax = {
     'E_I': { positive: 0, negative: 0 },
     'S_N': { positive: 0, negative: 0 },
     'T_F': { positive: 0, negative: 0 },
     'J_P': { positive: 0, negative: 0 }
   }
+  const archetypeRaw = createEmptyArchetypeAccumulator()
+  const userVector = createEmptyUserVector()
+  const archetypeMap = new Map(archetypes.map((item) => [item.id, item]))
 
   questions.forEach((question, index) => {
-    const val = answers[index]
-    if (typeof val !== 'number') return
+    const answer = answers[index]
+    if (!isAnsweredValue(answer)) {
+      return
+    }
 
     const { dimension, sign } = question
-    rawScores[dimension] += val * sign
+    rawScores[dimension] += answer * sign
 
     if (sign > 0) {
       directionalMaxScores[dimension].positive += 3
     } else {
       directionalMaxScores[dimension].negative += 3
+    }
+
+    const normalizedWeights = normalizeQuestionWeights(question.weights ?? QUESTION_WEIGHT_FALLBACKS[dimension])
+
+    for (const role of Object.keys(normalizedWeights) as QuestionArchetypeWeightId[]) {
+      const value = normalizedWeights[role] ?? 0
+      const archetypeId = ROLE_TO_ARCHETYPE[role]
+      const archetype = archetypeMap.get(archetypeId)
+      if (!archetype || value === 0) {
+        continue
+      }
+
+      const weightedAnswer = answer * value
+      archetypeRaw[archetypeId] += weightedAnswer
+
+      for (const axis of VECTOR_AXES) {
+        userVector[axis] += weightedAnswer * archetype.vector[axis]
+      }
     }
   })
 
@@ -148,11 +193,8 @@ export function calculateQuizResult({
   for (const pair in DIMENSION_LETTERS) {
     const dimension = pair as DimensionPair
     const score = normalizeDimensionScore(rawScores[dimension], directionalMaxScores[dimension])
-
     const [posLetter, negLetter] = DIMENSION_LETTERS[dimension]
     const dominant = score >= 0 ? posLetter : negLetter
-
-    // percentage calculation (50 to 100)
     const intensity = Math.min(1, Math.abs(score))
     const percentage = Math.round(50 + (intensity * 50))
 
@@ -165,33 +207,17 @@ export function calculateQuizResult({
     finalCode += dominant
   }
 
-  const featuredCharacter = pickFeaturedCharacter({
+  const matchedArchetype = pickMatchedArchetype(archetypes, archetypeRaw, finalCode)
+  const characterRankings = rankCharactersByProfile({
     scores,
     characters,
-    answers,
+    archetypeRaw,
+    userVector,
   })
-
-  const matchedArchetype: Archetype =
-    archetypes.find((a: Archetype) => a.id === featuredCharacter?.archetypeId) || {
-    id: 'luminous-lead' as ArchetypeId,
-    name: '异格旅行者',
-    subtitle: '无法被定义的观测者',
-    oneLiner: '世界之外，唯有真实的自我。',
-    description: '游离于传统分类之外的特殊存在',
-    tags: ['神秘判定', '罕见'],
-    narrativeRole: '旁观者',
-    spotlight: '不可名状的直觉',
-    weakness: '常常难以被常人理解',
-    keywords: ['观测', '唯一', '脱轨'],
-    accent: '#aaaaaa',
-    vector: { expression: 0, temperature: 0, judgement: 0, order: 0, agency: 0, aura: 0 }
-  }
-
-  const charMatches = featuredCharacter ? [featuredCharacter] : []
-
-  // 用题目结果强度和角色命中层级计算稳定的命中感，避免同一份答案重复提交时数值跳变。
-  const matchScore = calculateCharacterMatchScore(scores, featuredCharacter)
+  const featuredCharacter = characterRankings[0]?.character ?? null
+  const charMatches = characterRankings.slice(0, 3).map((item) => item.character)
   const roleCode = featuredCharacter?.code ?? 'UNKN'
+  const matchScore = calculateCharacterMatchScore(characterRankings[0])
 
   return {
     code: roleCode,
@@ -205,6 +231,24 @@ export function calculateQuizResult({
   }
 }
 
+function createEmptyArchetypeAccumulator(): ArchetypeAccumulator {
+  return ARCHETYPE_IDS.reduce((acc, id) => {
+    acc[id] = 0
+    return acc
+  }, {} as ArchetypeAccumulator)
+}
+
+function createEmptyUserVector(): UserVector {
+  return VECTOR_AXES.reduce((acc, axis) => {
+    acc[axis] = 0
+    return acc
+  }, {} as UserVector)
+}
+
+function isAnsweredValue(value: number) {
+  return value >= -3 && value <= 3
+}
+
 function normalizeDimensionScore(
   rawScore: number,
   directionalMax: { positive: number; negative: number },
@@ -214,6 +258,177 @@ function normalizeDimensionScore(
   }
 
   return rawScore / Math.max(1, directionalMax.negative)
+}
+
+function normalizeQuestionWeights(weights: Partial<Record<QuestionArchetypeWeightId, number>>) {
+  const completed = Object.keys(ROLE_TO_ARCHETYPE).reduce((acc, role) => {
+    const typedRole = role as QuestionArchetypeWeightId
+    acc[typedRole] = weights[typedRole] ?? 0
+    return acc
+  }, {} as Record<QuestionArchetypeWeightId, number>)
+
+  const values = Object.values(completed)
+  const mean = values.reduce((sum, value) => sum + value, 0) / values.length
+  const centered = Object.fromEntries(
+    Object.entries(completed).map(([key, value]) => [key, value - mean])
+  ) as Record<QuestionArchetypeWeightId, number>
+
+  const norm = Object.values(centered).reduce((sum, value) => sum + Math.abs(value), 0) || 1
+
+  return Object.fromEntries(
+    Object.entries(centered).map(([key, value]) => [key, value / norm])
+  ) as Record<QuestionArchetypeWeightId, number>
+}
+
+function pickMatchedArchetype(
+  archetypes: Archetype[],
+  archetypeRaw: ArchetypeAccumulator,
+  finalCode: string,
+) {
+  const sortedByScore = [...archetypes].sort((left, right) => {
+    const delta = archetypeRaw[right.id] - archetypeRaw[left.id]
+    if (delta !== 0) {
+      return delta
+    }
+
+    return left.id.localeCompare(right.id, 'en')
+  })
+
+  return (
+    sortedByScore[0] ??
+    resolveArchetypeForMbti(finalCode, archetypes) ?? {
+      id: 'luminous-lead' as ArchetypeId,
+      name: '异格旅行者',
+      subtitle: '无法被定义的观测者',
+      oneLiner: '世界之外，唯有真实的自我。',
+      description: '游离于传统分类之外的特殊存在',
+      tags: ['神秘判定', '罕见'],
+      narrativeRole: '旁观者',
+      spotlight: '不可名状的直觉',
+      weakness: '常常难以被常人理解',
+      keywords: ['观测', '唯一', '脱轨'],
+      accent: '#aaaaaa',
+      vector: { expression: 0, temperature: 0, judgement: 0, order: 0, agency: 0, aura: 0 }
+    }
+  )
+}
+
+type RankedCharacter = {
+  character: CharacterMatch
+  total: number
+  mbti: number
+  archetype: number
+  vector: number
+}
+
+function rankCharactersByProfile({
+  scores,
+  characters,
+  archetypeRaw,
+  userVector,
+}: {
+  scores: Record<DimensionPair, DimensionScore>
+  characters: CharacterMatch[]
+  archetypeRaw: ArchetypeAccumulator
+  userVector: UserVector
+}) {
+  return [...characters]
+    .map((character) => {
+      const mbti = scoreMbti(character.matchCode, scores)
+      const archetype = scoreArchetype(character.archetypeId, archetypeRaw)
+      const vector = scoreVector(userVector, character.vector)
+      const total = MBTI_WEIGHT * mbti + ARCHETYPE_WEIGHT * archetype + VECTOR_WEIGHT * vector
+
+      return {
+        character,
+        total,
+        mbti,
+        archetype,
+        vector,
+      }
+    })
+    .sort((left, right) => {
+      const totalDelta = right.total - left.total
+      if (Math.abs(totalDelta) > 0.005) {
+        return totalDelta
+      }
+
+      const archetypeDelta = right.archetype - left.archetype
+      if (Math.abs(archetypeDelta) > 0.005) {
+        return archetypeDelta
+      }
+
+      const vectorDelta = right.vector - left.vector
+      if (Math.abs(vectorDelta) > 0.005) {
+        return vectorDelta
+      }
+
+      return left.character.name.localeCompare(right.character.name, 'zh-Hans-CN')
+    })
+}
+
+function scoreMbti(
+  matchCode: string,
+  scores: Record<DimensionPair, DimensionScore>,
+) {
+  if (!MBTI_PATTERN.test(matchCode.toUpperCase())) {
+    return 0
+  }
+
+  const pairs: DimensionPair[] = ['E_I', 'S_N', 'T_F', 'J_P']
+  let total = 0
+
+  for (let index = 0; index < pairs.length; index += 1) {
+    const pair = pairs[index]
+    const actual = scores[pair]
+    const expectedLetter = matchCode[index] as MBTILetter
+    total += actual.dominant === expectedLetter ? actual.percentage : 100 - actual.percentage
+  }
+
+  return total / 400
+}
+
+function scoreArchetype(archetypeId: ArchetypeId, archetypeRaw: ArchetypeAccumulator) {
+  const values = Object.values(archetypeRaw)
+  const min = Math.min(...values)
+  const max = Math.max(...values)
+  const spread = max - min
+
+  if (spread <= 0.0001) {
+    return archetypeRaw[archetypeId] >= 0 ? 0.55 : 0.45
+  }
+
+  return (archetypeRaw[archetypeId] - min) / spread
+}
+
+function scoreVector(
+  userVector: UserVector,
+  characterVector: CharacterMatch['vector'],
+) {
+  const cosine = cosineSimilarity(userVector, characterVector)
+  return (cosine + 1) / 2
+}
+
+function cosineSimilarity(
+  left: UserVector,
+  right: CharacterMatch['vector'],
+) {
+  let dot = 0
+  let leftMagnitude = 0
+  let rightMagnitude = 0
+
+  for (const axis of VECTOR_AXES) {
+    dot += left[axis] * right[axis]
+    leftMagnitude += left[axis] * left[axis]
+    rightMagnitude += right[axis] * right[axis]
+  }
+
+  const denominator = Math.sqrt(leftMagnitude) * Math.sqrt(rightMagnitude)
+  if (!denominator) {
+    return 0
+  }
+
+  return dot / denominator
 }
 
 export function normalizeMbtiCode(mbtiCode: string) {
@@ -279,14 +494,25 @@ export function rankCharactersForMbti({
     return []
   }
 
-  const matchedArchetypeId = TYPE_TO_ARCHETYPE[normalized]
-  const preferredId = preferredCharacterId?.trim().toLowerCase()
-  const ranked = rankCharacters({
-    characters,
-    finalCode: normalized,
-    matchedArchetypeId,
-  })
+  const scores = buildScoresFromMbtiCode(normalized)
+  if (!scores) {
+    return []
+  }
 
+  const matchedArchetypeId = TYPE_TO_ARCHETYPE[normalized]
+  const emptyArchetypeRaw = createEmptyArchetypeAccumulator()
+  if (matchedArchetypeId) {
+    emptyArchetypeRaw[matchedArchetypeId] = 1
+  }
+
+  const ranked = rankCharactersByProfile({
+    scores,
+    characters,
+    archetypeRaw: emptyArchetypeRaw,
+    userVector: createEmptyUserVector(),
+  }).map((item) => item.character)
+
+  const preferredId = preferredCharacterId?.trim().toLowerCase()
   if (!preferredId) {
     return ranked
   }
@@ -330,12 +556,9 @@ export function createDebugQuizResult({
   }
 
   const scores = buildScoresFromMbtiCode(character.matchCode)
-
   if (!scores) {
     return null
   }
-
-  const matchScore = calculateCharacterMatchScore(scores, character)
 
   return {
     code: character.code,
@@ -343,141 +566,21 @@ export function createDebugQuizResult({
     scores,
     archetype: matchedArchetype,
     tags: [matchedArchetype.narrativeRole, ...matchedArchetype.tags].slice(0, 6),
-    matchScore,
+    matchScore: 92,
     characterMatches: [character],
     featuredCharacter: character,
   }
 }
 
-function pickFeaturedCharacter({
-  scores,
-  characters,
-  answers,
-}: {
-  scores: Record<DimensionPair, DimensionScore>
-  characters: CharacterMatch[]
-  answers: number[]
-}) {
-  if (!characters.length) {
-    return null
+function calculateCharacterMatchScore(topMatch?: RankedCharacter) {
+  if (!topMatch) {
+    return 60
   }
 
-  const scored = characters.map((character) => ({
-    character,
-    score: getCharacterDimensionScore(scores, character),
-  }))
-  const bestScore = Math.max(...scored.map((item) => item.score))
-  const topCandidates = scored
-    .filter((item) => item.score === bestScore)
-    .map((item) => item.character)
-    .sort((left, right) => left.id.localeCompare(right.id, 'en'))
-
-  if (topCandidates.length === 1) {
-    return topCandidates[0]
-  }
-
-  // 同分角色用答案指纹分流，避免同一 matchCode 的角色永远被固定压制。
-  const fingerprint = buildAnswerFingerprint(answers)
-  return topCandidates[fingerprint % topCandidates.length]
+  return Math.max(60, Math.min(99, Math.round(topMatch.total * 100)))
 }
 
-function buildAnswerFingerprint(answers: number[]) {
-  return answers.reduce((seed, answer, index) => {
-    const normalized = answer + 4
-    return (seed * 131 + normalized * (index + 7)) % 2147483647
-  }, 17)
-}
-
-function getCharacterDimensionScore(
-  scores: Record<DimensionPair, DimensionScore>,
-  character: CharacterMatch,
-) {
-  const pairs: DimensionPair[] = ['E_I', 'S_N', 'T_F', 'J_P']
-  let total = 0
-
-  for (let index = 0; index < pairs.length; index += 1) {
-    const pair = pairs[index]
-    const expectedLetter = character.matchCode[index] as MBTILetter
-    const actual = scores[pair]
-    const sameDominant = actual.dominant === expectedLetter
-
-    total += sameDominant ? actual.percentage : 100 - actual.percentage
-  }
-
-  return total
-}
-
-function calculateCharacterMatchScore(
-  scores: Record<DimensionPair, DimensionScore>,
-  featuredCharacter: CharacterMatch | null,
-) {
-  const averageCertainty =
-    Object.values(scores).reduce((sum, item) => sum + item.percentage, 0) / Object.values(scores).length
-
-  if (!featuredCharacter) {
-    return Math.round(Math.min(89, averageCertainty + 12))
-  }
-
-  const raw = getCharacterDimensionScore(scores, featuredCharacter)
-  return Math.max(60, Math.min(99, Math.round((raw / 400) * 100)))
-}
-
-// 获取角色分类（用于结果页面）
 export function getRoleForType(mbtiType: string): { name: string; description: string } {
   const baseType = mbtiType.slice(0, 4)
   return ROLE_MAPPING[baseType] || { name: 'Explorers', description: 'Unique individuals with diverse perspectives.' }
 }
-
-function rankCharacters({
-  characters,
-  finalCode,
-  matchedArchetypeId,
-}: {
-  characters: CharacterMatch[]
-  finalCode: string
-  matchedArchetypeId: ArchetypeId | undefined
-}) {
-  return [...characters].sort((left, right) => {
-    const rightScore = getCharacterRankScore(right, finalCode, matchedArchetypeId)
-    const leftScore = getCharacterRankScore(left, finalCode, matchedArchetypeId)
-
-    if (rightScore !== leftScore) {
-      return rightScore - leftScore
-    }
-
-    return right.name.localeCompare(left.name, 'zh-Hans-CN')
-  })
-}
-
-function getCharacterRankScore(
-  character: CharacterMatch,
-  finalCode: string,
-  matchedArchetypeId: ArchetypeId | undefined,
-) {
-  const code = character.matchCode.toUpperCase()
-  let score = sharedLetterCount(code, finalCode) * 10
-
-  if (character.archetypeId === matchedArchetypeId) {
-    score += 8
-  }
-
-  if (code === finalCode) {
-    score += 60
-  }
-
-  return score
-}
-
-function sharedLetterCount(left: string, right: string) {
-  let count = 0
-
-  for (let index = 0; index < Math.min(left.length, right.length); index += 1) {
-    if (left[index] === right[index]) {
-      count += 1
-    }
-  }
-
-  return count
-}
-
-// 保留旧函数区域占位，匹配分数已迁移到 calculateCharacterMatchScore。

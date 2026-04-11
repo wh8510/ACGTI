@@ -1,41 +1,665 @@
 [
-  { "id": "q1", "text": "看到“柚子÷蒸鹅心”这种话，我会先笑一下，然后默默点举报。", "scene": "圈外冲突", "dimension": "T_F", "sign": 1 },
-  { "id": "q2", "text": "我的人生格言是“能躺着绝不坐着，能摆烂绝不内卷”。", "scene": "生活态度", "dimension": "J_P", "sign": -1 },
-  { "id": "q3", "text": "追番时看到“前方高能”弹幕，我会故意把音量调到最大，然后被吓得直喊咕咕嘎嘎。", "scene": "追番体验", "dimension": "S_N", "sign": 1 },
-  { "id": "q4", "text": "我认为“电子阳痿”不是病，是steam里游戏堆满仓库后的高级形态。", "scene": "游戏状态", "dimension": "J_P", "sign": -1 },
-  { "id": "q5", "text": "我会在up们索要三连时肌肉记忆地打出“下次一定”。", "scene": "数字生活", "dimension": "J_P", "sign": -1 },
-  { "id": "q6", "text": "如果我穿越到厕纸番剧里的异世界，第一件事不是去当勇者。", "scene": "幻想偏好", "dimension": "S_N", "sign": -1 },
-  { "id": "q7", "text": "我觉得“战力厨”为了谁更强吵上300楼，是一种行为艺术。", "scene": "论战文化", "dimension": "T_F", "sign": 1 },
-  { "id": "q8", "text": "我的电脑桌面图标像被炸弹炸过一样，但我说得出每个文件的精确位置。", "scene": "桌面管理", "dimension": "J_P", "sign": -1 },
-  { "id": "q9", "text": "我经常在深夜刷到emo文案，然后评论一句“感觉像在照镜子”，第二天醒来觉得昨晚的自己很蠢。", "scene": "情绪波动", "dimension": "T_F", "sign": 1 },
-  { "id": "q10", "text": "我觉得“三无”属性根本不是高冷，是懒得营业。", "scene": "审美偏好", "dimension": "S_N", "sign": -1 },
-  { "id": "q11", "text": "如果有人说我是“二刺猿”，我会觉得他在骂我，但我还是会回一句“啊对对对”。", "scene": "身份认同", "dimension": "E_I", "sign": -1 },
-  { "id": "q12", "text": "我能在漫展上和陌生人无缝对话“老师老师你是一个香香软软的......”。", "scene": "社交场合", "dimension": "E_I", "sign": 1 },
-  { "id": "q13", "text": "我认为“党争”是ACG最伟大的发明。", "scene": "论战文化", "dimension": "T_F", "sign": -1 },
-  { "id": "q14", "text": "游戏卡关时，我宁愿开风灵月影一刀999，也不愿意查攻略。", "scene": "游戏行为", "dimension": "S_N", "sign": 1 },
-  { "id": "q15", "text": "我觉得“动漫婆罗门”就是一群闲得蛋疼的人给自己立的牌坊。", "scene": "圈内批判", "dimension": "S_N", "sign": -1 },
-  { "id": "q16", "text": "我会因为一首OP好听而追完整部屎一样的番。", "scene": "追番动机", "dimension": "S_N", "sign": 1 },
-  { "id": "q17", "text": "我追完一部致郁番，会立刻打开搞笑番对冲，但致郁的余味会持续三天。", "scene": "情绪调节", "dimension": "T_F", "sign": -1 },
-  { "id": "q18", "text": "我觉得遇到那0.6%的概率而“抽卡沉船”后骂官方，是玄学仪式的一部分，不骂下次会更非。", "scene": "游戏行为", "dimension": "T_F", "sign": -1 },
-  { "id": "q19", "text": "我看到“完结撒花”弹幕，会鼻子一酸，然后迅速打开下一部番来麻痹自己。", "scene": "追番情感", "dimension": "T_F", "sign": 1 },
-  { "id": "q20", "text": "我认为“饭圈化”正在毁掉ACG，但我偶尔也会为喜欢的角色刷“xxx是我老婆”。", "scene": "圈内批判", "dimension": "T_F", "sign": -1 },
-  { "id": "q21", "text": "我的Steam库里80%的游戏没打开过，但我还会继续买，这叫“电子仓鼠症”。", "scene": "消费习惯", "dimension": "J_P", "sign": -1 },
-  { "id": "q22", "text": "如果我推的Vtuber毕业了，我会痛哭流涕，然后第二天去看新人。", "scene": "粉丝行为", "dimension": "T_F", "sign": 1 },
-  { "id": "q23", "text": "我觉得“中二病”是一辈子的事，我现在还会在没人的时候念咒语。", "scene": "自我坦白", "dimension": "E_I", "sign": -1 },
-  { "id": "q24", "text": "我觉得“废萌”是工业糖精，但我就是爱吃，还会吧唧嘴。", "scene": "自我吐槽", "dimension": "S_N", "sign": 1 },
-  { "id": "q25", "text": "如果有一天我穿越成反派，我会选择直接加入主角团，然后躺赢。", "scene": "生存策略", "dimension": "E_I", "sign": 1 },
-  { "id": "q26", "text": "我能在0.5秒内从QQ里的300个表情包里找到最合适的那一个，然后发出去。", "scene": "实用技能", "dimension": "E_I", "sign": 1 },
-  { "id": "q27", "text": "我认为“结局喂屎”的作品，作者应该给读者磕头谢罪。", "scene": "观众权利", "dimension": "T_F", "sign": -1 },
-  { "id": "q28", "text": "我理想中的退休生活是：宅家、打游戏、看番、撸猫，并且拒绝任何社交。", "scene": "人生目标", "dimension": "E_I", "sign": -1 },
-  { "id": "q29", "text": "我在网上看到“地狱笑话”会笑出声，然后马上忏悔。", "scene": "网络幽默", "dimension": "T_F", "sign": -1 },
-  { "id": "q30", "text": "我会去看“骨科”或高度抽象题材的作品。", "scene": "伦理阈值", "dimension": "S_N", "sign": -1 },
-  { "id": "q31", "text": "我会为了一个喜欢的角色，去玩一款根本不感兴趣的游戏，然后光速弃坑。", "scene": "消费行为", "dimension": "J_P", "sign": -1 },
-  { "id": "q32", "text": "我觉得“社恐”不是缺陷，而是一种高级人设。", "scene": "自我认知", "dimension": "E_I", "sign": -1 },
-  { "id": "q33", "text": "追番时我会开两倍速，除非有特别精彩的打斗或者福利镜头。", "scene": "追番习惯", "dimension": "J_P", "sign": 1 },
-  { "id": "q34", "text": "如果有人在我的评论区刷烂梗，我会直接拉黑清理。", "scene": "网络冲突", "dimension": "J_P", "sign": 1 },
-  { "id": "q35", "text": "我觉得“傲娇”属性已经过时了，现在流行“重力系”，就是那种让人喘不过气的爱。", "scene": "属性评价", "dimension": "S_N", "sign": 1 },
-  { "id": "q36", "text": "我认为“二次元”是我的精神避难所，可以在这里发疯。", "scene": "身份认同", "dimension": "E_I", "sign": 1 },
-  { "id": "q37", "text": "我会认真给每个番剧打分，甚至写上百字的小作文。", "scene": "考据行为", "dimension": "J_P", "sign": 1 },
-  { "id": "q38", "text": "我玩游戏一定会强迫自己清完所有支线和地图问号。", "scene": "游戏行为", "dimension": "J_P", "sign": 1 },
-  { "id": "q39", "text": "遇到喜欢的新番，我会立刻分享给群友并强行安利。", "scene": "社交分享", "dimension": "E_I", "sign": 1 }
+  {
+    "id": "q1",
+    "text": "看到“柚子÷蒸鹅心”这种话，我会先笑一下，然后默默点举报。",
+    "scene": "圈外冲突",
+    "dimension": "T_F",
+    "sign": 1,
+    "weights": {
+      "strategist": 2,
+      "ruler": 1,
+      "healer": -2,
+      "guardian": -1,
+      "berserker": 1,
+      "hero": 0,
+      "lonewolf": 0,
+      "trickster": -1
+    }
+  },
+  {
+    "id": "q2",
+    "text": "我的人生格言是“能躺着绝不坐着，能摆烂绝不内卷”。",
+    "scene": "生活态度",
+    "dimension": "J_P",
+    "sign": -1,
+    "weights": {
+      "ruler": 2,
+      "guardian": 1,
+      "strategist": 1,
+      "trickster": -2,
+      "berserker": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "healer": 0
+    }
+  },
+  {
+    "id": "q3",
+    "text": "追番时看到“前方高能”弹幕，我会故意把音量调到最大，然后被吓得直喊咕咕嘎嘎。",
+    "scene": "追番体验",
+    "dimension": "S_N",
+    "sign": 1,
+    "weights": {
+      "strategist": 2,
+      "trickster": 2,
+      "healer": 1,
+      "ruler": -1,
+      "guardian": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "berserker": 0
+    }
+  },
+  {
+    "id": "q4",
+    "text": "我认为“电子阳痿”不是病，是steam里游戏堆满仓库后的高级形态。",
+    "scene": "游戏状态",
+    "dimension": "J_P",
+    "sign": -1,
+    "weights": {
+      "ruler": 2,
+      "guardian": 1,
+      "strategist": 1,
+      "trickster": -2,
+      "berserker": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "healer": 0
+    }
+  },
+  {
+    "id": "q5",
+    "text": "我会在up们索要三连时肌肉记忆地打出“下次一定”。",
+    "scene": "数字生活",
+    "dimension": "J_P",
+    "sign": -1,
+    "weights": {
+      "ruler": 2,
+      "guardian": 1,
+      "strategist": 1,
+      "trickster": -2,
+      "berserker": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "healer": 0
+    }
+  },
+  {
+    "id": "q6",
+    "text": "如果我穿越到厕纸番剧里的异世界，第一件事不是去当勇者。",
+    "scene": "幻想偏好",
+    "dimension": "S_N",
+    "sign": -1,
+    "weights": {
+      "strategist": 2,
+      "trickster": 2,
+      "healer": 1,
+      "ruler": -1,
+      "guardian": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "berserker": 0
+    }
+  },
+  {
+    "id": "q7",
+    "text": "我觉得“战力厨”为了谁更强吵上300楼，是一种行为艺术。",
+    "scene": "论战文化",
+    "dimension": "T_F",
+    "sign": 1,
+    "weights": {
+      "strategist": 2,
+      "ruler": 1,
+      "healer": -2,
+      "guardian": -1,
+      "berserker": 1,
+      "hero": 0,
+      "lonewolf": 0,
+      "trickster": -1
+    }
+  },
+  {
+    "id": "q8",
+    "text": "我的电脑桌面图标像被炸弹炸过一样，但我说得出每个文件的精确位置。",
+    "scene": "桌面管理",
+    "dimension": "J_P",
+    "sign": -1,
+    "weights": {
+      "ruler": 2,
+      "guardian": 1,
+      "strategist": 1,
+      "trickster": -2,
+      "berserker": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "healer": 0
+    }
+  },
+  {
+    "id": "q9",
+    "text": "我经常在深夜刷到emo文案，然后评论一句“感觉像在照镜子”，第二天醒来觉得昨晚的自己很蠢。",
+    "scene": "情绪波动",
+    "dimension": "T_F",
+    "sign": 1,
+    "weights": {
+      "strategist": 2,
+      "ruler": 1,
+      "healer": -2,
+      "guardian": -1,
+      "berserker": 1,
+      "hero": 0,
+      "lonewolf": 0,
+      "trickster": -1
+    }
+  },
+  {
+    "id": "q10",
+    "text": "我觉得“三无”属性根本不是高冷，是懒得营业。",
+    "scene": "审美偏好",
+    "dimension": "S_N",
+    "sign": -1,
+    "weights": {
+      "strategist": 2,
+      "trickster": 2,
+      "healer": 1,
+      "ruler": -1,
+      "guardian": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "berserker": 0
+    }
+  },
+  {
+    "id": "q11",
+    "text": "如果有人说我是“二刺猿”，我会觉得他在骂我，但我还是会回一句“啊对对对”。",
+    "scene": "身份认同",
+    "dimension": "E_I",
+    "sign": -1,
+    "weights": {
+      "hero": 2,
+      "trickster": 2,
+      "healer": 1,
+      "lonewolf": -2,
+      "strategist": -1,
+      "guardian": 0,
+      "berserker": 0,
+      "ruler": 0
+    }
+  },
+  {
+    "id": "q12",
+    "text": "我能在漫展上和陌生人无缝对话“老师老师你是一个香香软软的......”。",
+    "scene": "社交场合",
+    "dimension": "E_I",
+    "sign": 1,
+    "weights": {
+      "hero": 2,
+      "trickster": 2,
+      "healer": 1,
+      "lonewolf": -2,
+      "strategist": -1,
+      "guardian": 0,
+      "berserker": 0,
+      "ruler": 0
+    }
+  },
+  {
+    "id": "q13",
+    "text": "我认为“党争”是ACG最伟大的发明。",
+    "scene": "论战文化",
+    "dimension": "T_F",
+    "sign": -1,
+    "weights": {
+      "strategist": 2,
+      "ruler": 1,
+      "healer": -2,
+      "guardian": -1,
+      "berserker": 1,
+      "hero": 0,
+      "lonewolf": 0,
+      "trickster": -1
+    }
+  },
+  {
+    "id": "q14",
+    "text": "游戏卡关时，我宁愿开风灵月影一刀999，也不愿意查攻略。",
+    "scene": "游戏行为",
+    "dimension": "S_N",
+    "sign": 1,
+    "weights": {
+      "strategist": 2,
+      "trickster": 2,
+      "healer": 1,
+      "ruler": -1,
+      "guardian": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "berserker": 0
+    }
+  },
+  {
+    "id": "q15",
+    "text": "我觉得“动漫婆罗门”就是一群闲得蛋疼的人给自己立的牌坊。",
+    "scene": "圈内批判",
+    "dimension": "S_N",
+    "sign": -1,
+    "weights": {
+      "strategist": 2,
+      "trickster": 2,
+      "healer": 1,
+      "ruler": -1,
+      "guardian": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "berserker": 0
+    }
+  },
+  {
+    "id": "q16",
+    "text": "我会因为一首OP好听而追完整部屎一样的番。",
+    "scene": "追番动机",
+    "dimension": "S_N",
+    "sign": 1,
+    "weights": {
+      "strategist": 2,
+      "trickster": 2,
+      "healer": 1,
+      "ruler": -1,
+      "guardian": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "berserker": 0
+    }
+  },
+  {
+    "id": "q17",
+    "text": "我追完一部致郁番，会立刻打开搞笑番对冲，但致郁的余味会持续三天。",
+    "scene": "情绪调节",
+    "dimension": "T_F",
+    "sign": -1,
+    "weights": {
+      "strategist": 2,
+      "ruler": 1,
+      "healer": -2,
+      "guardian": -1,
+      "berserker": 1,
+      "hero": 0,
+      "lonewolf": 0,
+      "trickster": -1
+    }
+  },
+  {
+    "id": "q18",
+    "text": "我觉得遇到那0.6%的概率而“抽卡沉船”后骂官方，是玄学仪式的一部分，不骂下次会更非。",
+    "scene": "游戏行为",
+    "dimension": "T_F",
+    "sign": -1,
+    "weights": {
+      "strategist": 2,
+      "ruler": 1,
+      "healer": -2,
+      "guardian": -1,
+      "berserker": 1,
+      "hero": 0,
+      "lonewolf": 0,
+      "trickster": -1
+    }
+  },
+  {
+    "id": "q19",
+    "text": "我看到“完结撒花”弹幕，会鼻子一酸，然后迅速打开下一部番来麻痹自己。",
+    "scene": "追番情感",
+    "dimension": "T_F",
+    "sign": 1,
+    "weights": {
+      "strategist": 2,
+      "ruler": 1,
+      "healer": -2,
+      "guardian": -1,
+      "berserker": 1,
+      "hero": 0,
+      "lonewolf": 0,
+      "trickster": -1
+    }
+  },
+  {
+    "id": "q20",
+    "text": "我认为“饭圈化”正在毁掉ACG，但我偶尔也会为喜欢的角色刷“xxx是我老婆”。",
+    "scene": "圈内批判",
+    "dimension": "T_F",
+    "sign": -1,
+    "weights": {
+      "strategist": 2,
+      "ruler": 1,
+      "healer": -2,
+      "guardian": -1,
+      "berserker": 1,
+      "hero": 0,
+      "lonewolf": 0,
+      "trickster": -1
+    }
+  },
+  {
+    "id": "q21",
+    "text": "我的Steam库里80%的游戏没打开过，但我还会继续买，这叫“电子仓鼠症”。",
+    "scene": "消费习惯",
+    "dimension": "J_P",
+    "sign": -1,
+    "weights": {
+      "ruler": 2,
+      "guardian": 1,
+      "strategist": 1,
+      "trickster": -2,
+      "berserker": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "healer": 0
+    }
+  },
+  {
+    "id": "q22",
+    "text": "如果我推的Vtuber毕业了，我会痛哭流涕，然后第二天去看新人。",
+    "scene": "粉丝行为",
+    "dimension": "T_F",
+    "sign": 1,
+    "weights": {
+      "strategist": 2,
+      "ruler": 1,
+      "healer": -2,
+      "guardian": -1,
+      "berserker": 1,
+      "hero": 0,
+      "lonewolf": 0,
+      "trickster": -1
+    }
+  },
+  {
+    "id": "q23",
+    "text": "我觉得“中二病”是一辈子的事，我现在还会在没人的时候念咒语。",
+    "scene": "自我坦白",
+    "dimension": "E_I",
+    "sign": -1,
+    "weights": {
+      "hero": 2,
+      "trickster": 2,
+      "healer": 1,
+      "lonewolf": -2,
+      "strategist": -1,
+      "guardian": 0,
+      "berserker": 0,
+      "ruler": 0
+    }
+  },
+  {
+    "id": "q24",
+    "text": "我觉得“废萌”是工业糖精，但我就是爱吃，还会吧唧嘴。",
+    "scene": "自我吐槽",
+    "dimension": "S_N",
+    "sign": 1,
+    "weights": {
+      "strategist": 2,
+      "trickster": 2,
+      "healer": 1,
+      "ruler": -1,
+      "guardian": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "berserker": 0
+    }
+  },
+  {
+    "id": "q25",
+    "text": "如果有一天我穿越成反派，我会选择直接加入主角团，然后躺赢。",
+    "scene": "生存策略",
+    "dimension": "E_I",
+    "sign": 1,
+    "weights": {
+      "hero": 2,
+      "trickster": 2,
+      "healer": 1,
+      "lonewolf": -2,
+      "strategist": -1,
+      "guardian": 0,
+      "berserker": 0,
+      "ruler": 0
+    }
+  },
+  {
+    "id": "q26",
+    "text": "我能在0.5秒内从QQ里的300个表情包里找到最合适的那一个，然后发出去。",
+    "scene": "实用技能",
+    "dimension": "E_I",
+    "sign": 1,
+    "weights": {
+      "hero": 2,
+      "trickster": 2,
+      "healer": 1,
+      "lonewolf": -2,
+      "strategist": -1,
+      "guardian": 0,
+      "berserker": 0,
+      "ruler": 0
+    }
+  },
+  {
+    "id": "q27",
+    "text": "我认为“结局喂屎”的作品，作者应该给读者磕头谢罪。",
+    "scene": "观众权利",
+    "dimension": "T_F",
+    "sign": -1,
+    "weights": {
+      "strategist": 2,
+      "ruler": 1,
+      "healer": -2,
+      "guardian": -1,
+      "berserker": 1,
+      "hero": 0,
+      "lonewolf": 0,
+      "trickster": -1
+    }
+  },
+  {
+    "id": "q28",
+    "text": "我理想中的退休生活是：宅家、打游戏、看番、撸猫，并且拒绝任何社交。",
+    "scene": "人生目标",
+    "dimension": "E_I",
+    "sign": -1,
+    "weights": {
+      "hero": 2,
+      "trickster": 2,
+      "healer": 1,
+      "lonewolf": -2,
+      "strategist": -1,
+      "guardian": 0,
+      "berserker": 0,
+      "ruler": 0
+    }
+  },
+  {
+    "id": "q29",
+    "text": "我在网上看到“地狱笑话”会笑出声，然后马上忏悔。",
+    "scene": "网络幽默",
+    "dimension": "T_F",
+    "sign": -1,
+    "weights": {
+      "strategist": 2,
+      "ruler": 1,
+      "healer": -2,
+      "guardian": -1,
+      "berserker": 1,
+      "hero": 0,
+      "lonewolf": 0,
+      "trickster": -1
+    }
+  },
+  {
+    "id": "q30",
+    "text": "我会去看“骨科”或高度抽象题材的作品。",
+    "scene": "伦理阈值",
+    "dimension": "S_N",
+    "sign": -1,
+    "weights": {
+      "strategist": 2,
+      "trickster": 2,
+      "healer": 1,
+      "ruler": -1,
+      "guardian": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "berserker": 0
+    }
+  },
+  {
+    "id": "q31",
+    "text": "我会为了一个喜欢的角色，去玩一款根本不感兴趣的游戏，然后光速弃坑。",
+    "scene": "消费行为",
+    "dimension": "J_P",
+    "sign": -1,
+    "weights": {
+      "ruler": 2,
+      "guardian": 1,
+      "strategist": 1,
+      "trickster": -2,
+      "berserker": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "healer": 0
+    }
+  },
+  {
+    "id": "q32",
+    "text": "我觉得“社恐”不是缺陷，而是一种高级人设。",
+    "scene": "自我认知",
+    "dimension": "E_I",
+    "sign": -1,
+    "weights": {
+      "hero": 2,
+      "trickster": 2,
+      "healer": 1,
+      "lonewolf": -2,
+      "strategist": -1,
+      "guardian": 0,
+      "berserker": 0,
+      "ruler": 0
+    }
+  },
+  {
+    "id": "q33",
+    "text": "追番时我会开两倍速，除非有特别精彩的打斗或者福利镜头。",
+    "scene": "追番习惯",
+    "dimension": "J_P",
+    "sign": 1,
+    "weights": {
+      "ruler": 2,
+      "guardian": 1,
+      "strategist": 1,
+      "trickster": -2,
+      "berserker": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "healer": 0
+    }
+  },
+  {
+    "id": "q34",
+    "text": "如果有人在我的评论区刷烂梗，我会直接拉黑清理。",
+    "scene": "网络冲突",
+    "dimension": "J_P",
+    "sign": 1,
+    "weights": {
+      "ruler": 2,
+      "guardian": 1,
+      "strategist": 1,
+      "trickster": -2,
+      "berserker": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "healer": 0
+    }
+  },
+  {
+    "id": "q35",
+    "text": "我觉得“傲娇”属性已经过时了，现在流行“重力系”，就是那种让人喘不过气的爱。",
+    "scene": "属性评价",
+    "dimension": "S_N",
+    "sign": 1,
+    "weights": {
+      "strategist": 2,
+      "trickster": 2,
+      "healer": 1,
+      "ruler": -1,
+      "guardian": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "berserker": 0
+    }
+  },
+  {
+    "id": "q36",
+    "text": "我认为“二次元”是我的精神避难所，可以在这里发疯。",
+    "scene": "身份认同",
+    "dimension": "E_I",
+    "sign": 1,
+    "weights": {
+      "hero": 2,
+      "trickster": 2,
+      "healer": 1,
+      "lonewolf": -2,
+      "strategist": -1,
+      "guardian": 0,
+      "berserker": 0,
+      "ruler": 0
+    }
+  },
+  {
+    "id": "q37",
+    "text": "我会认真给每个番剧打分，甚至写上百字的小作文。",
+    "scene": "考据行为",
+    "dimension": "J_P",
+    "sign": 1,
+    "weights": {
+      "ruler": 2,
+      "guardian": 1,
+      "strategist": 1,
+      "trickster": -2,
+      "berserker": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "healer": 0
+    }
+  },
+  {
+    "id": "q38",
+    "text": "我玩游戏一定会强迫自己清完所有支线和地图问号。",
+    "scene": "游戏行为",
+    "dimension": "J_P",
+    "sign": 1,
+    "weights": {
+      "ruler": 2,
+      "guardian": 1,
+      "strategist": 1,
+      "trickster": -2,
+      "berserker": -1,
+      "hero": 0,
+      "lonewolf": 0,
+      "healer": 0
+    }
+  },
+  {
+    "id": "q39",
+    "text": "遇到喜欢的新番，我会立刻分享给群友并强行安利。",
+    "scene": "社交分享",
+    "dimension": "E_I",
+    "sign": 1,
+    "weights": {
+      "hero": 2,
+      "trickster": 2,
+      "healer": 1,
+      "lonewolf": -2,
+      "strategist": -1,
+      "guardian": 0,
+      "berserker": 0,
+      "ruler": 0
+    }
+  }
 ]

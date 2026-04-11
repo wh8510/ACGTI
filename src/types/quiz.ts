@@ -34,7 +34,7 @@ export interface QuestionOption {
   id: string
   label: string
   tone: string
-  weights: Partial<Record<DimensionId, number>>
+  weights: Partial<Record<QuestionArchetypeWeightId, number>>
 }
 
 export interface Question {
@@ -70,12 +70,16 @@ export interface CharacterMatch {
   image?: string
   accent?: string
   matchCode: string
+  matchCodeFlex?: string[]
   code: string
   title?: string
   archetypeId: ArchetypeId
   tags: string[]
   note: string
   vector: Record<DimensionId, number>
+  signature?: {
+    uniqueAxes?: Partial<Record<DimensionId, number>>
+  }
 }
 
 export interface DimensionScore {

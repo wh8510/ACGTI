@@ -10,7 +10,7 @@
     "archetypeId": "luminous-lead",
     "tags": ["电子韭菜收割机", "葱田永动机", "演唱会空气吉他冠军", "二次元公务员"],
     "note": "你以为她是歌姬，其实她是二次元公务员——演唱会排期比社畜加班还密，葱色双马尾一晃，弹幕自动刷「世最可」，哪怕你根本没听清歌词。属于那种「我不认识她，但我刷过她的表情包」的典中典。",
-    "vector": { "expression": 3, "temperature": 2, "judgement": 1, "order": 0, "agency": 3, "aura": 3 }
+    "vector": { "expression": 3, "temperature": 2, "judgement": 0, "order": 0, "agency": 3, "aura": 2 }
   },
   {
     "id": "ayanami-rei",
@@ -112,7 +112,7 @@
     "archetypeId": "oathbound-captain",
     "tags": ["超电磁炮实为硬币发射器", "安全裤战士", "傲娇但不完全傲", "嘴上说不管身体很诚实"],
     "note": "别人吵架靠嘴，她吵架靠三倍音速硬币。嘴上「我才不管」，行动上已经冲到最前面扛伤害——属于「嘴上傲，身体诚」的经典款女主。建议搭配BGM《Only My Railgun》食用，效果更佳。",
-    "vector": { "expression": 2, "temperature": 1, "judgement": 2, "order": 2, "agency": 3, "aura": 2 }
+    "vector": { "expression": 2, "temperature": 1, "judgement": 1, "order": 1, "agency": 3, "aura": 2 }
   },
   {
     "id": "kaname-madoka",
@@ -184,7 +184,7 @@
     "archetypeId": "gentle-healer",
     "tags": ["表面体面内心风暴", "话里有话十级学者", "道歉让你自我反省三天", "笑面虎战术大师"],
     "note": "你看起来最会照顾人，其实最会把话说得让人后劲很大。她没骂你，但你已经跪在键盘前反思人生——属于「笑面虎中的战术大师」。建议交往前先买好保险。",
-    "vector": { "expression": 0, "temperature": 2, "judgement": 2, "order": 2, "agency": 1, "aura": 2 }
+    "vector": { "expression": 0, "temperature": 1, "judgement": 3, "order": 2, "agency": 1, "aura": 2 }
   },
   {
     "id": "shiina-taki",
@@ -212,15 +212,27 @@
   },
   {
     "id": "wakaba-mutsumi",
-    "name": "若叶睦 / Mortis",
+    "name": "若叶睦",
     "series": "BanG Dream! Ave Mujica",
     "matchCode": "ISTJ",
     "code": "MRTS",
-    "title": "静音核弹·面无表情高危单位",
+    "title": "静音核弹·面无表情的问题儿童",
     "archetypeId": "moonlit-guardian",
     "tags": ["黄瓜田里的沉默核武", "一开口就是名场面", "你永远猜不透", "不说话则已一说话刀死你"],
-    "note": "你不是情绪少，你是情绪都藏在别人看不懂的地方。平时像背景板，一旦展开就会让所有人意识到：我们根本没看懂她——属于「不说话则已，一说话刀死你」。建议不要试图解读，容易走火入魔。",
+    "note": "你不是情绪少，你是情绪都藏在别人看不懂的地方。平时像背景板，却总在关键节点露出让人不安的执拗和迟钝感——属于「安静得过头，反而让人不敢移开视线」的类型。",
     "vector": { "expression": -3, "temperature": -2, "judgement": 3, "order": 2, "agency": 2, "aura": 3 }
+  },
+  {
+    "id": "mortis",
+    "name": "Mortis",
+    "series": "BanG Dream! Ave Mujica",
+    "matchCode": "INTJ",
+    "code": "MRTS-X",
+    "title": "异相人格·冷面舞台幽灵",
+    "archetypeId": "shadow-strategist",
+    "tags": ["人格切换感", "压迫性登场", "不说人话式表达", "危险的舞台变量"],
+    "note": "这不是单纯的安静，而是像把真实情绪锁进另一个舞台壳里。你给人的感觉更像一个随时会改写氛围的变量，克制、陌生，而且带着明确的攻击性轮廓。",
+    "vector": { "expression": -2, "temperature": -2, "judgement": 3, "order": 1, "agency": 3, "aura": 3 }
   },
   {
     "id": "misumi-uika",
@@ -232,7 +244,7 @@
     "archetypeId": "gentle-healer",
     "tags": ["白月光假象", "越看越不对劲", "自己也不知道下一步", "温柔型不定时炸弹"],
     "note": "你给人的第一印象是「应该很好相处」，但真正危险的地方在于：你自己也未必完全知道自己下一步会做什么——属于「温柔型不定时炸弹」。建议远离，除非你享受被炸的刺激。",
-    "vector": { "expression": 0, "temperature": 2, "judgement": 1, "order": 0, "agency": 2, "aura": 3 }
+    "vector": { "expression": 0, "temperature": 1, "judgement": 1, "order": 0, "agency": 2, "aura": 3 }
   },
   {
     "id": "yahata-umiri",
