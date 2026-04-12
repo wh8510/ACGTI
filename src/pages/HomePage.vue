@@ -29,7 +29,7 @@
       </div>
     </section>
 
-    <section class="stats">
+    <section class="stats" v-reveal>
       <div class="container stat-grid">
         <div v-for="item in stats" :key="item.label" class="stat-item">
           <p class="stat-value" :style="{ color: item.color }">{{ item.value }}</p>
@@ -44,7 +44,7 @@
       </div>
     </section>
 
-    <section class="feature feature-light">
+    <section class="feature feature-light" v-reveal>
       <div class="container feature-layout">
         <article>
           <p class="feature-tag tag-green">Personality Types</p>
@@ -66,7 +66,7 @@
       </div>
     </section>
 
-    <section class="feature feature-alt">
+    <section class="feature feature-alt" v-reveal>
       <div class="container feature-layout reverse">
         <aside class="feature-illustration office-2" aria-hidden="true">
           <div class="figure d"></div>
@@ -83,7 +83,7 @@
       </div>
     </section>
 
-    <section class="testimonials">
+    <section class="testimonials" v-reveal>
       <div class="quote-badge">“</div>
       <div class="container">
         <p class="testimonial-tag">Testimonials</p>

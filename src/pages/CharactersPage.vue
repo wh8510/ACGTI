@@ -21,6 +21,7 @@ const { t } = useI18n()
         :to="{ path: '/result', query: { character: character.id } }"
         class="character-card"
         :style="{ '--accent-color': character.accent }"
+        v-reveal
       >
         <div class="card-image-wrap">
           <img :src="character.image" :alt="character.name" class="card-image" loading="lazy" />

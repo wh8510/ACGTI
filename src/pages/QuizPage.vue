@@ -26,6 +26,7 @@
           class="question-block"
           :class="{ 'needs-answer': pendingUnansweredIndex === idx }"
           :ref="(el) => setQuestionRef(el, idx)"
+          v-reveal
         >
           <h2>{{ t('quiz.questions.' + idx, undefined, (question.text || question.prompt || t('quiz.missingQuestion'))) }}</h2>
 

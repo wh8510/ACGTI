@@ -15,7 +15,7 @@ const { t, tm } = useI18n()
       </div>
     </section>
 
-    <section class="split-grid">
+    <section class="split-grid" v-reveal>
       <article class="panel">
         <h2 class="section-title">{{ t('intro.resultTitle') }}</h2>
         <div class="meta-list">

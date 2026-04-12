@@ -209,12 +209,12 @@ function getDominantTraitLabel(traitId: TraitDimension, leftCode: string, leftLa
 
     <div class="result-body">
       <main class="result-main">
-        <section class="intro-block">
+        <section class="intro-block" v-reveal>
           <p>{{ t('archetypes.' + result.archetype.id + '.description', undefined, result.archetype.description) }}</p>
           <p>{{ primaryCharacter ? t('characters.' + primaryCharacter.id + '.note', undefined, primaryCharacter.note) : '' }}</p>
         </section>
 
-        <section class="traits-section" id="traits-section">
+        <section class="traits-section" id="traits-section" v-reveal>
           <div class="section-title-wrap">
             <div class="section-index">1</div>
             <h2 class="section-title">{{ t('result.traitsTitle') }}</h2>
@@ -266,7 +266,7 @@ function getDominantTraitLabel(traitId: TraitDimension, leftCode: string, leftLa
           </div>
         </section>
 
-        <section class="analysis-grid">
+        <section class="analysis-grid" v-reveal>
           <article class="analysis-card good">
             <h3>
                 <AppIcon name="star" />
@@ -283,7 +283,7 @@ function getDominantTraitLabel(traitId: TraitDimension, leftCode: string, leftLa
           </article>
         </section>
 
-        <section v-if="primaryCharacter" class="tags-block">
+        <section v-if="primaryCharacter" class="tags-block" v-reveal>
           <h3>
             <AppIcon name="character" />
             角色映射

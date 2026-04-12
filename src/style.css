@@ -874,3 +874,70 @@ select {
     font-size: 1.2rem;
   }
 }
+
+/* ============================================
+   Animations & Transitions
+   ============================================ */
+
+.page-fade-enter-active,
+.page-fade-leave-active {
+  transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.page-fade-enter-from,
+.page-fade-leave-to {
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-float-up {
+  animation: floatUp 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes pulseScale {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.animate-pulse {
+  animation: pulseScale 2s infinite ease-in-out;
+}
+
+
+.reveal-init {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  transition: opacity 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.6s cu
+bic-bezier(0.25, 0.8, 0.25, 1);
+}
+.reveal-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+
+button, .btn, .button-primary, .hero-button, .submit-btn, .nav-cta, .character
+-card {
+  transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.2
+5s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.25s ease, opacity 0.25
+s ease ;
+}
+
+button:hover, .btn:hover, .button-primary:hover, .hero-button:hover, .submit-b
+tn:hover, .nav-cta:hover, .character-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+button:active, .btn:active, .button-primary:active, .hero-button:active, .subm
+it-btn:active, .nav-cta:active, .character-card:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
