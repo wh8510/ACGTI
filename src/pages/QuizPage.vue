@@ -24,7 +24,10 @@
           v-for="(question, idx) in questions"
           :key="question.id"
           class="question-block"
-          :class="{ 'needs-answer': pendingUnansweredIndex === idx }"
+          :class="{ 
+            'needs-answer': pendingUnansweredIndex === idx,
+            'upcoming-dimmed': idx > firstUnansweredIndex && state.answers[idx] === undefined
+          }"
           :ref="(el) => setQuestionRef(el, idx)"
           v-reveal
         >
@@ -168,10 +171,29 @@ async function jumpToUnansweredQuestion(index: number) {
 
   await nextTick()
   const target = questionRefs.value[index]
-  target?.scrollIntoView({
-    behavior: 'smooth',
-    block: 'center',
-  })
+  if (target) {
+    const targetPosition = target.getBoundingClientRect().top + window.scrollY - (window.innerHeight / 2) + (target.offsetHeight / 2)
+    const startPosition = window.scrollY
+    const distance = targetPosition - startPosition
+    const duration = Math.min(1200, Math.max(400, Math.abs(distance) * 0.5)) // Dynamic duration between 400ms and 1200ms
+    let startTime: number | null = null
+
+    // easeInOutCubic: smooth start and end
+    const easeInOutCubic = (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+
+    const animation = (currentTime: number) => {
+      if (startTime === null) startTime = currentTime
+      const timeElapsed = currentTime - startTime
+      const progress = Math.min(timeElapsed / duration, 1)
+
+      window.scrollTo(0, startPosition + distance * easeInOutCubic(progress))
+
+      if (progress < 1) {
+        requestAnimationFrame(animation)
+      }
+    }
+    requestAnimationFrame(animation)
+  }
 }
 
 async function submitQuiz() {
@@ -293,7 +315,18 @@ async function submitQuiz() {
   padding: 36px 18px;
   border-bottom: 1px solid #f1f4f8;
   scroll-margin-top: 24px;
-  transition: background-color 0.22s ease, box-shadow 0.22s ease;
+  transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease, background-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.question-block.upcoming-dimmed {
+  opacity: 0.45;
+  filter: grayscale(0.4);
+}
+
+.question-block.upcoming-dimmed:hover {
+  opacity: 0.8;
+  filter: grayscale(0);
+  transform: translateY(0);
 }
 
 .question-block:last-child {
@@ -355,7 +388,17 @@ async function submitQuiz() {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  position: relative;
   transition: transform 0.18s ease, background-color 0.18s ease, opacity 0.18s ease;
+}
+
+.scale-btn::before {
+  content: '';
+  position: absolute;
+  top: -3px; left: -3px; right: -3px; bottom: -3px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .size-sm { width: 28px; height: 28px; }
@@ -364,8 +407,13 @@ async function submitQuiz() {
 .size-xl { width: 56px; height: 56px; }
 
 .agree-ring { border-color: #33a474; }
+.agree-ring::before { background-color: #33a474; }
+
 .disagree-ring { border-color: #88619a; }
+.disagree-ring::before { background-color: #88619a; }
+
 .neutral-ring { border-color: #9aa5b1; }
+.neutral-ring::before { background-color: #9aa5b1; }
 
 .scale-btn:not(.selected) {
   opacity: 0.65;
@@ -376,10 +424,30 @@ async function submitQuiz() {
   opacity: 1;
 }
 
+.scale-btn:active {
+  transform: scale(0.92);
+}
+
+@keyframes radioPop {
+  0% { transform: scale(1); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1.06); }
+}
+
+@keyframes radioRipple {
+  0% { transform: scale(0.8); opacity: 0.4; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
 .scale-btn.selected {
   opacity: 1;
   border-color: transparent;
-  transform: scale(1.04);
+  transform: scale(1.06);
+  animation: radioPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.scale-btn.selected::before {
+  animation: radioRipple 0.5s ease-out;
 }
 
 .scale-btn.agree-ring.selected {

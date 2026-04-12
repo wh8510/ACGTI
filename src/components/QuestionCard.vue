@@ -88,6 +88,11 @@ defineEmits<{
   border-color: currentColor;
   background: white;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: scale(1.02);
+}
+
+.option-button:active {
+  transform: scale(0.98);
 }
 
 .option-circle {
