@@ -230,51 +230,6 @@ select {
   padding-top: 72px;
 }
 
-/* GitHub Ribbon */
-.github-ribbon {
-  position: fixed;
-  top: 85px;
-  right: -50px;
-  width: 200px;
-  background: #24292e;
-  color: white;
-  text-align: center;
-  line-height: 32px;
-  transform: rotate(45deg);
-  z-index: 40;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  font-weight: 700;
-  font-size: 13px;
-  pointer-events: auto;
-  transition: background 0.2s;
-}
-
-.github-ribbon:hover {
-  background: #444;
-}
-
-.github-ribbon a {
-  display: block;
-  width: 100%;
-  color: white;
-  text-decoration: none;
-}
-
-/* Footer link highlight */
-.footer-link-highlight {
-  display: inline-block;
-  margin-top: 8px;
-  color: #33a474;
-  font-weight: 700;
-  text-decoration: none;
-  border-bottom: 2px solid transparent;
-  transition: border-color 0.2s;
-}
-
-.footer-link-highlight:hover {
-  border-bottom-color: #33a474;
-}
-
 .page-stack {
   display: grid;
   gap: 32px;
