@@ -261,7 +261,7 @@ const seriesI18n: Record<string, LocalizedText> = {
   },
   '某科学的超电磁炮': {
     'zh-CN': '某科学的超电磁炮',
-    'zh-TW': '某科學的超電磁砲',
+    'zh-TW': '科學超電磁砲',
     en: 'A Certain Scientific Railgun',
     ja: 'とある科学の超電磁砲',
   },
@@ -303,7 +303,7 @@ const seriesI18n: Record<string, LocalizedText> = {
   },
   '超时空辉夜姬！': {
     'zh-CN': '超时空辉夜姬！',
-    'zh-TW': '超時空輝夜姬！',
+    'zh-TW': '超時空輝耀姬！',
     en: 'Cho-Kaguyahime!',
     ja: '超かぐや姫！',
   },
@@ -327,7 +327,7 @@ const seriesI18n: Record<string, LocalizedText> = {
   },
   '败犬女主太多了！': {
     'zh-CN': '败犬女主太多了！',
-    'zh-TW': '敗犬女主太多了！',
+    'zh-TW': '敗北女角太多了！',
     en: 'Too Many Losing Heroines!',
     ja: '負けヒロインが多すぎる！',
   },
