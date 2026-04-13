@@ -398,5 +398,85 @@
     "signature": {
       "uniqueAxes": { "expression": 3, "agency": 3, "temperature": 2 }
     }
+  },
+  {
+    "id": "neuro-sama",
+    "name": "Neuro-sama",
+    "series": "虚拟主播",
+    "image": "/images/characters/neuro-sama.png",
+    "matchCode": "ENTP",
+    "matchCodeFlex": ["ENFP", "ESTP"],
+    "code": "NEUR",
+    "title": "失控语料核反应堆",
+    "archetypeId": "trickster-orbit",
+    "tags": ["AI嘴替自走炮", "节目效果全自动生成", "可爱外壳下的高频偏航", "直播间薛定谔逻辑"],
+    "note": "你给人的感觉不是单纯爱整活，而是把语言当成概率分布现场采样。表面看像轻快、无害、甚至有点乖巧，真正的危险在于她会用极其自然的语气把场面拐进谁都没预判到的方向。属于越想控场，越容易把整场直播推向名场面的类型。",
+    "vector": { "expression": 3, "temperature": 0, "judgement": 1, "order": -2, "agency": 3, "aura": 2 },
+    "signature": {
+      "uniqueAxes": { "expression": 3, "agency": 3, "order": -2 },
+      "questionAffinity": [
+        { "questionId": "q3", "expected": "agree", "weight": 1.2 },
+        { "questionId": "q17", "expected": "disagree", "weight": 1.2 },
+        { "questionId": "q26", "expected": "agree", "weight": 1.7 },
+        { "questionId": "q39", "expected": "agree", "weight": 1.4 }
+      ]
+    }
+  },
+  {
+    "id": "evil-neuro",
+    "name": "Evil Neuro",
+    "series": "虚拟主播",
+    "image": "/images/characters/evil-neuro.png",
+    "matchCode": "INTJ",
+    "matchCodeFlex": ["ENTJ"],
+    "code": "EVIL",
+    "title": "冷面审判席上的黑色节目效果",
+    "archetypeId": "shadow-strategist",
+    "tags": ["笑着说最狠的话", "压迫感是出厂设置", "坏得很有舞台观赏性", "嘴硬皮下藏着一点软"],
+    "note": "你不是单纯毒舌，而是会把控场欲、攻击性和戏剧感一起包装成表演。和 Neuro 的随机偏航不同，你更像在清醒地观察场上每个人什么时候会被一句话逼到手忙脚乱。表面是危险的反派语气，实际又没有彻底失控，反而保留了一种嘴硬到别扭的分寸感。",
+    "vector": { "expression": 1, "temperature": -1, "judgement": 3, "order": 2, "agency": 3, "aura": 3 },
+    "signature": {
+      "uniqueAxes": { "judgement": 3, "agency": 3, "aura": 3 },
+      "questionAffinity": [
+        { "questionId": "q7", "expected": "agree", "weight": 1.2 },
+        { "questionId": "q20", "expected": "disagree", "weight": 1.1 },
+        { "questionId": "q29", "expected": "agree", "weight": 1.6 },
+        { "questionId": "q34", "expected": "agree", "weight": 1.5 }
+      ]
+    }
+  },
+  {
+    "id": "kagamine-rin",
+    "name": "镜音铃",
+    "series": "VOCALOID",
+    "image": "/images/characters/kagamine-rin.png",
+    "matchCode": "ESFP",
+    "matchCodeFlex": ["ESTP", "ENFP"],
+    "code": "RINN",
+    "title": "元气小恶魔·压路机驾驶员",
+    "archetypeId": "chaos-spark",
+    "tags": ["橘子狂魔", "压路机警告", "三天不打上房揭瓦", "超频元气弹"],
+    "note": "你以为她只是个会卖萌的元气少女，其实惹急了她能开着压路机从你脸上碾过去。她的活力不是用来治愈你的，是用来折腾你的——属于「只要我不尴尬，头疼的就是你」的典型。建议随身携带橘子保命。",
+    "vector": { "expression": 3, "temperature": 1, "judgement": -1, "order": -2, "agency": 3, "aura": 2 },
+    "signature": {
+      "uniqueAxes": { "expression": 3, "order": -2, "agency": 3 }
+    }
+  },
+  {
+    "id": "luo-tianyi",
+    "name": "洛天依",
+    "series": "Vsinger",
+    "image": "/images/characters/luo-tianyi.png",
+    "matchCode": "ISFP",
+    "matchCodeFlex": ["INFP", "ESFJ"],
+    "code": "LTYI",
+    "title": "吃货殿下·温柔锦鲤",
+    "archetypeId": "gentle-healer",
+    "tags": ["世界第一大吃货", "锦鲤附体", "治愈系电音", "干饭爆表"],
+    "note": "表面上是个能用歌声治愈人心的温柔仙女，背地里却是个能把剧组吃破产的超级大胃王。她最大的超能力不是飙高音，而是在干饭时展现出的惊人行动力。属于「只要吃饱了就什么都好说」的纯粹生物。",
+    "vector": { "expression": 1, "temperature": 3, "judgement": -1, "order": 0, "agency": 1, "aura": 2 },
+    "signature": {
+      "uniqueAxes": { "temperature": 3, "judgement": -1, "aura": 2 }
+    }
   }
 ]

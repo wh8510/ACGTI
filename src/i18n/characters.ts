@@ -148,6 +148,30 @@ const characterNameI18n: Record<string, LocalizedText> = {
     en: 'Eis Taffy',
     ja: '永雛タフィ',
   },
+  'neuro-sama': {
+    'zh-CN': 'Neuro-sama',
+    'zh-TW': 'Neuro-sama',
+    en: 'Neuro-sama',
+    ja: 'Neuro-sama',
+  },
+  'evil-neuro': {
+    'zh-CN': 'Evil Neuro',
+    'zh-TW': 'Evil Neuro',
+    en: 'Evil Neuro',
+    ja: 'Evil Neuro',
+  },
+  'kagamine-rin': {
+    'zh-CN': '镜音铃',
+    'zh-TW': '鏡音鈴',
+    en: 'Kagamine Rin',
+    ja: '鏡音リン',
+  },
+  'luo-tianyi': {
+    'zh-CN': '洛天依',
+    'zh-TW': '洛天依',
+    en: 'Luo Tianyi',
+    ja: '洛天依',
+  },
 }
 
 const seriesI18n: Record<string, LocalizedText> = {
@@ -156,6 +180,12 @@ const seriesI18n: Record<string, LocalizedText> = {
     'zh-TW': 'VOCALOID',
     en: 'VOCALOID',
     ja: 'VOCALOID',
+  },
+  Vsinger: {
+    'zh-CN': 'Vsinger',
+    'zh-TW': 'Vsinger',
+    en: 'Vsinger',
+    ja: 'Vsinger',
   },
   '新世纪福音战士': {
     'zh-CN': '新世纪福音战士',
@@ -247,4 +277,3 @@ export function getLocalizedCharacterName(character: Pick<CharacterMatch, 'id' |
 export function getLocalizedCharacterSeries(character: Pick<CharacterMatch, 'series'>, locale: AppLocale) {
   return resolveLocalizedText(seriesI18n, character.series, locale, character.series)
 }
-

@@ -94,5 +94,21 @@
 	"eis-taffy": {
 		"image": "/images/characters/永雏塔菲.png",
 		"accent": "#f3a3b6"
+	},
+	"neuro-sama": {
+		"image": "/images/characters/neuro-sama.png",
+		"accent": "#72d8f7"
+	},
+	"evil-neuro": {
+		"image": "/images/characters/evil-neuro.png",
+		"accent": "#8b5cf6"
+	},
+	"kagamine-rin": {
+		"image": "/images/characters/kagamine-rin.png",
+		"accent": "#ffb11b"
+	},
+	"luo-tianyi": {
+		"image": "/images/characters/luo-tianyi.png",
+		"accent": "#66ccff"
 	}
 }
