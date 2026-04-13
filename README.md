@@ -157,6 +157,14 @@ git push origin v0.1.0
 | `src/data/characterVisuals.json` | 角色视觉配置 — 立绘、色彩、主题 |
 | `src/data/characterProbabilities.json` | 角色命中概率 — 基于人群统计的先验分布 |
 
+## 📰 时间线
+
+- **2026.4.14:** 网站访问人数超过 100 万，网站访问量达到 350 万
+- **2026.4.13:** Star 数达到 250
+- **2026.4.12:** 访问人数达到 50 万
+- **2026.4.11:** 进入 taffy 直播间；当天早些时候在校内 100 人 BanG Dream 群完成首轮测试
+- **2026.4.10:** 创建仓库
+
 ## 致谢
 
 - **界面风格** — 参考自 [16personalities](https://www.16personalities.com/) 的扁平化设计与专业测评体验
