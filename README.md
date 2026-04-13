@@ -162,6 +162,11 @@ git push origin v0.1.0
 - **界面风格** — 参考自 [16personalities](https://www.16personalities.com/) 的扁平化设计与专业测评体验
 - **项目启发** — 受到开源项目 [UnluckyNinja/SBTI-test](https://github.com/UnluckyNinja/SBTI-test) 的启发
 - **视觉素材** — 项目中的角色立绘与背景图片由 **ChatGPT (DALL·E)** 生成
+- **特别鸣谢** — [saurlax](https://saurlax.com/) 提供 GPT-5.4 Token 支持
+
+## 作者
+
+**[tianxingleo](https://github.com/tianxingleo)**
 
 ## 产品边界
 
