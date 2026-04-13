@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import AdsenseSlot from '../components/AdsenseSlot.vue'
 import AppIcon from '../components/AppIcon.vue'
+import SharePoster from '../components/SharePoster.vue'
 import { useShare } from '../composables/useShare'
 import { useQuiz } from '../composables/useQuiz'
 import { useI18n } from '../i18n'
@@ -17,8 +18,14 @@ const activeDebugResult = ref<ReturnType<typeof quiz.createDebugResult>>(null)
 const result = computed(() => activeDebugResult.value ?? quiz.latestResult.value)
 const isCharacterImageBroken = ref(false)
 const share = useShare()
+const posterRef = ref<InstanceType<typeof SharePoster> | null>(null)
 const { locale, t, tm } = useI18n()
 const resultAdSlot = String(import.meta.env.VITE_ADSENSE_SLOT_RESULT ?? '').trim()
+
+function exportPosterImage() {
+  if (!result.value || !posterRef.value?.rootEl) return
+  void share.exportPoster(posterRef.value.rootEl, result.value)
+}
 
 onMounted(() => {
   quiz.resumeLastResult()
@@ -298,13 +305,39 @@ function getDominantTraitLabel(traitId: TraitDimension, leftCode: string, leftLa
           </article>
         </section>
 
-        <section v-if="primaryCharacter" class="tags-block" v-reveal>
+        <section class="tags-block" v-if="primaryCharacter" v-reveal>
           <h3>
             <AppIcon name="character" />
             {{ t('result.tags') }}
           </h3>
           <div class="tags-wrap">
             <span v-for="tag in displayTags" :key="tag"># {{ tag }}</span>
+          </div>
+        </section>
+
+        <section class="share-card-block" v-reveal>
+          <div class="section-title-wrap">
+            <div class="section-index">2</div>
+            <h2 class="section-title">{{ tm<string[]>('result.tocItems')[2] || t('result.shareCard', undefined, '分享卡片') }}</h2>
+          </div>
+          <p style="margin: 0 0 20px; font-size: 15px; color: #5f6b75; line-height: 1.6;">
+            {{ t('result.shareCardHint', undefined, '长按下方卡片保存，或点击下方按钮直接导出高清图片，分享至社交媒体吧。') }}
+          </p>
+          
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 24px; margin-bottom: 8px;">
+            <SharePoster ref="posterRef" :result="result" style="width: 100%; max-width: 480px; margin: 0 auto;" />
+            
+            <button 
+              @click="exportPosterImage" 
+              :disabled="share.isExporting.value"
+              class="export-image-btn"
+              :style="{ backgroundColor: resultThemeColor }"
+            >
+              <AppIcon name="spinner" v-if="share.isExporting.value" style="animation: spin 1s linear infinite" />
+              <AppIcon name="download" v-else />
+              <span style="letter-spacing: 0.05em">{{ share.isExporting.value ? t('common.generating', undefined, '生成中...') : t('common.saveImage', undefined, '一键保存长图') }}</span>
+            </button>
+            <p v-if="share.feedback.value" class="export-feedback">{{ share.feedback.value }}</p>
           </div>
         </section>
 
@@ -333,6 +366,12 @@ function getDominantTraitLabel(traitId: TraitDimension, leftCode: string, leftLa
           <button @click="copyText">
             <AppIcon name="copy" />
             {{ t('result.share') }}
+          </button>
+          
+          <button @click="exportPosterImage" :disabled="share.isExporting.value" :style="{ background: resultThemeColor, marginTop: '4px' }">
+            <AppIcon name="spinner" v-if="share.isExporting.value" style="animation: spin 1s linear infinite" />
+            <AppIcon name="download" v-else />
+            {{ share.isExporting.value ? t('common.generating', undefined, '生成中...') : t('common.saveImage', undefined, '导出图片') }}
           </button>
           <p v-if="share.feedback.value" class="sidebar-feedback">{{ share.feedback.value }}</p>
         </div>
@@ -1201,6 +1240,42 @@ function getDominantTraitLabel(traitId: TraitDimension, leftCode: string, leftLa
   .tags-block {
     border-radius: 14px;
   }
+}
+
+.export-image-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 16px 36px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+  width: 100%;
+  max-width: 360px;
+}
+.export-image-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+.export-image-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+}
+.export-feedback {
+  margin: 0;
+  font-size: 14px;
+  color: #3ba17c;
+  font-weight: 600;
+}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
 }
 
 </style>
