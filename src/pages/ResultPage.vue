@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import AdsenseSlot from '../components/AdsenseSlot.vue'
 import AppIcon from '../components/AppIcon.vue'
+import SharePoster from '../components/SharePoster.vue'
 import { useShare } from '../composables/useShare'
 import { useQuiz } from '../composables/useQuiz'
 import { useI18n } from '../i18n'
@@ -17,8 +18,14 @@ const activeDebugResult = ref<ReturnType<typeof quiz.createDebugResult>>(null)
 const result = computed(() => activeDebugResult.value ?? quiz.latestResult.value)
 const isCharacterImageBroken = ref(false)
 const share = useShare()
+const posterRef = ref<InstanceType<typeof SharePoster> | null>(null)
 const { locale, t, tm } = useI18n()
 const resultAdSlot = String(import.meta.env.VITE_ADSENSE_SLOT_RESULT ?? '').trim()
+
+function exportPosterImage() {
+  if (!result.value || !posterRef.value?.rootEl) return
+  void share.exportPoster(posterRef.value.rootEl, result.value)
+}
 
 onMounted(() => {
   quiz.resumeLastResult()
@@ -227,6 +234,10 @@ function getDominantTraitLabel(traitId: TraitDimension, leftCode: string, leftLa
         <section class="intro-block" v-reveal>
           <p>{{ t('archetypes.' + result.archetype.id + '.description', undefined, result.archetype.description) }}</p>
           <p>{{ primaryCharacter ? (isHiddenCharacter(primaryCharacter) ? getHiddenCharacterNote(locale) : t('characters.' + primaryCharacter.id + '.note', undefined, primaryCharacter.note)) : '' }}</p>
+          <div v-if="primaryCharacter?.personaBasis?.type === 'fandom-impression'" class="persona-basis-notice">
+            <span class="persona-basis-badge">{{ t('result.personaBasisBadge') }}</span>
+            <p class="persona-basis-summary">{{ t('result.personaBasisTip') }}</p>
+          </div>
         </section>
 
         <section class="traits-section" id="traits-section" v-reveal>
@@ -298,7 +309,7 @@ function getDominantTraitLabel(traitId: TraitDimension, leftCode: string, leftLa
           </article>
         </section>
 
-        <section v-if="primaryCharacter" class="tags-block" v-reveal>
+        <section class="tags-block" v-if="primaryCharacter" v-reveal>
           <h3>
             <AppIcon name="character" />
             {{ t('result.tags') }}
@@ -307,6 +318,20 @@ function getDominantTraitLabel(traitId: TraitDimension, leftCode: string, leftLa
             <span v-for="tag in displayTags" :key="tag"># {{ tag }}</span>
           </div>
         </section>
+
+        <div style="margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 16px;">
+  <button @click="exportPosterImage" :disabled="share.isExporting.value" class="export-image-btn" :style="{ backgroundColor: resultThemeColor }">
+    <AppIcon name="spinner" v-if="share.isExporting.value" style="animation: spin 1s linear infinite" />
+    <AppIcon name="download" v-else />
+    <span style="letter-spacing: 0.05em">{{ share.isExporting.value ? t('common.generating', undefined, '生成中...') : t('common.saveImage', undefined, '生成并分享次元身份卡') }}</span>
+  </button>
+  <p v-if="share.feedback.value" class="export-feedback">{{ share.feedback.value }}</p>
+</div>
+
+<div class="poster-capture-wrapper">
+  <SharePoster ref="posterRef" :result="result" />
+</div>
+
 
         <section v-if="resultAdSlot" class="result-ad-section">
           <AdsenseSlot :slot="resultAdSlot" :label="t('app.common.sponsored')" />
@@ -334,12 +359,21 @@ function getDominantTraitLabel(traitId: TraitDimension, leftCode: string, leftLa
             <AppIcon name="copy" />
             {{ t('result.share') }}
           </button>
+          
+          <button @click="exportPosterImage" :disabled="share.isExporting.value" :style="{ background: resultThemeColor, marginTop: '4px' }">
+            <AppIcon name="spinner" v-if="share.isExporting.value" style="animation: spin 1s linear infinite" />
+            <AppIcon name="download" v-else />
+            {{ share.isExporting.value ? t('common.generating', undefined, '生成中...') : t('common.saveImage', undefined, '导出图片') }}
+          </button>
           <p v-if="share.feedback.value" class="sidebar-feedback">{{ share.feedback.value }}</p>
         </div>
 
         <div class="sidebar-card relay-card">
-          <p class="small-title">{{ t('result.relayTitle') }}</p>
+          <div class="relay-card-icon">
+            <AppIcon name="copy" />
+          </div>
           <p class="relay-copy">{{ t('result.relayCopy') }}</p>
+          <div class="relay-divider"></div>
           <p class="relay-hint">{{ t('result.relayHint') }}</p>
         </div>
 
@@ -627,6 +661,36 @@ function getDominantTraitLabel(traitId: TraitDimension, leftCode: string, leftLa
   margin-bottom: 0;
 }
 
+.persona-basis-notice {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: #fffdf5;
+  border: 1px solid #f0e2b0;
+  border-radius: 10px;
+}
+
+.persona-basis-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #fef3cd;
+  border: 1px solid #f0e2b0;
+  color: #8a6d1f;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.persona-basis-summary {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #7a6a3a;
+  font-weight: 500;
+}
+
 .section-title-wrap {
   display: flex;
   align-items: center;
@@ -900,6 +964,7 @@ function getDominantTraitLabel(traitId: TraitDimension, leftCode: string, leftLa
 .sidebar-actions {
   display: grid;
   gap: 8px;
+  margin-bottom: 24px;
 }
 
 .sidebar-actions button {
@@ -931,23 +996,42 @@ function getDominantTraitLabel(traitId: TraitDimension, leftCode: string, leftLa
 }
 
 .relay-card {
-  background: linear-gradient(180deg, #ffffff, #f6fbf8);
-  border-color: #d9e9e1;
+  background: linear-gradient(180deg, #ffffff, #f7faf9);
+  border-color: #e2e8e5;
+  padding: 24px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.relay-card-icon {
+  position: absolute;
+  top: -10px;
+  right: -5px;
+  font-size: 48px;
+  color: #33a474;
+  opacity: 0.05;
+  transform: rotate(15deg);
 }
 
 .relay-copy {
-  margin: 8px 0 0;
+  margin: 12px 0;
   font-size: 14px;
-  line-height: 1.65;
+  line-height: 1.6;
   color: #4f5d67;
 }
 
+.relay-divider {
+  height: 1px;
+  background: #eef2f0;
+  margin: 14px 0;
+}
+
 .relay-hint {
-  margin: 10px 0 0;
-  font-size: 12px;
-  line-height: 1.6;
-  color: #7b8690;
-  font-weight: 600;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #33a474;
+  font-weight: 700;
 }
 
 .project-card {
@@ -1203,4 +1287,48 @@ function getDominantTraitLabel(traitId: TraitDimension, leftCode: string, leftLa
   }
 }
 
+.export-image-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 16px 36px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+  width: 100%;
+  max-width: 360px;
+}
+.export-image-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+.export-image-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+}
+.export-feedback {
+  margin: 0;
+  font-size: 14px;
+  color: #3ba17c;
+  font-weight: 600;
+}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+.poster-capture-wrapper {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  width: 440px;
+  pointer-events: none;
+  z-index: -9999;
+}
 </style>

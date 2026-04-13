@@ -44,7 +44,7 @@ export function useShare() {
       const dataUrl = await toPng(target, {
         cacheBust: true,
         pixelRatio: 2,
-        backgroundColor: '#100f17',
+        backgroundColor: '#ffffff',
       })
 
       const link = document.createElement('a')
