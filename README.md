@@ -135,8 +135,8 @@ src/
 
 ## 📰 时间线
 
-- **2026.4.14 15:00** 网站访问量超过 400 万
-- **2026.4.13 21:00:** 网站访问人数达到 100 万，仓库Star 数达到 300
+- **2026.4.14 15:00** [网站](https://acgti.tianxingleo.top/)访问量超过 400 万
+- **2026.4.13 21:00:** [网站](https://acgti.tianxingleo.top/)访问人数达到 100 万，仓库Star 数达到 300
 - **2026.4.12 8:00:** 访问人数达到 50 万
 - **2026.4.11 23:00:** 进入 [**永雏塔菲**](https://www.bilibili.com/video/BV11FDyBZEN1/?spm_id_from=333.337.search-card.all.click) 直播间
 - **2026.4.11 12:00:** 在校内 100 人 BanG Dream 群测试，首次公开
@@ -243,7 +243,7 @@ git push origin v0.1.0
 
 ## 作者
 
-**[tianxingleo](https://github.com/tianxingleo/)** · [tianxingleo.top](https://tianxingleo.top)
+**tianxingleo** · [GitHub 主页](https://github.com/tianxingleo/) · [作者主页](https://tianxingleo.top)
 
 <div align="center">
 
