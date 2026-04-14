@@ -256,6 +256,12 @@ const characterNameI18n: Record<string, LocalizedText> = {
     en: 'Ai Haibara',
     ja: '灰原哀',
   },
+  kaltsit: {
+    'zh-CN': '凯尔希',
+    'zh-TW': '凱爾希',
+    en: "Kal'tsit",
+    ja: 'ケルシー',
+  },
   'arima-kana': {
     'zh-CN': '有马加奈',
     'zh-TW': '有馬加奈',
@@ -402,6 +408,12 @@ const seriesI18n: Record<string, LocalizedText> = {
     'zh-TW': '崩壞3rd',
     en: 'Honkai Impact 3rd',
     ja: '崩壊3rd',
+  },
+  '明日方舟': {
+    'zh-CN': '明日方舟',
+    'zh-TW': '明日方舟',
+    en: 'Arknights',
+    ja: 'アークナイツ',
   },
   '我推的孩子': {
     'zh-CN': '我推的孩子',

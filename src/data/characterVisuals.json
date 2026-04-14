@@ -189,6 +189,11 @@
 			"thumb": "/images/characters/thumbs/灰原哀.webp",
 			"accent": "#705877"
 		},
+		"kaltsit": {
+			"image": "/images/characters/凯尔希.webp",
+			"thumb": "/images/characters/thumbs/凯尔希.webp",
+			"accent": "#00B578"
+		},
 		"arima-kana": {
 			"image": "/images/characters/有马加奈.webp",
 			"thumb": "/images/characters/thumbs/有马加奈.webp",
