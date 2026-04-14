@@ -8,6 +8,7 @@ import { useShare } from '../composables/useShare'
 import { useQuiz } from '../composables/useQuiz'
 import { useI18n } from '../i18n'
 import { getHiddenCharacterNote, getHiddenCharacterTags, getHiddenCharacterTitle, getLocalizedCharacterName, getLocalizedCharacterSeries, isHiddenCharacter } from '../i18n/characters'
+import { getCharacterRarityMeta } from '../utils/characterRarity'
 import { formatCharacterProbability } from '../utils/characterProbability'
 import { normalizeMbtiCode } from '../utils/quizEngine'
 
@@ -134,7 +135,7 @@ const primaryCharacterImageCandidates = computed(() => getCharacterImageCandidat
 const activePrimaryCharacterImage = computed(() => primaryCharacterImageCandidates.value[characterImageAttemptIndex.value] ?? '')
 
 const primaryCharacter = computed(() => result.value?.characterMatches?.[0] ?? null)
-const secondaryCharacterMatches = computed(() => result.value?.topCharacterMatches?.slice(1, 4) ?? [])
+const secondaryCharacterMatches = computed(() => result.value?.topCharacterMatches?.slice(1, 3) ?? [])
 const displayTags = computed(() => {
   if (!primaryCharacter.value) {
     return []
@@ -149,6 +150,32 @@ const displayTags = computed(() => {
 const displayCode = computed(() => result.value?.code ?? result.value?.mbtiCode ?? '')
 const displayProbability = computed(() => formatCharacterProbability(result.value?.matchProbability ?? 0))
 const resultThemeColor = computed(() => primaryCharacter.value?.accent ?? result.value?.archetype.accent ?? '#e2ad3b')
+const rarityMeta = computed(() => getCharacterRarityMeta(primaryCharacter.value?.id))
+const rarityTierLabel = computed(() => {
+  const tier = rarityMeta.value?.tier
+  return tier
+    ? t(`result.rarityTiers.${tier}`, undefined, tier)
+    : '--'
+})
+const rarityRankLabel = computed(() => {
+  if (!rarityMeta.value) {
+    return ''
+  }
+
+  return t('result.rarityRank', {
+    rank: rarityMeta.value.rank,
+    total: rarityMeta.value.total,
+  }, `相对稀有排名 #${rarityMeta.value.rank}/${rarityMeta.value.total}`)
+})
+const probabilityLabel = computed(() => {
+  if (!result.value) {
+    return ''
+  }
+
+  return t('result.populationProbability', {
+    value: displayProbability.value,
+  }, `理论命中率 ${displayProbability.value}%`)
+})
 const strongestTrait = computed(() => {
   if (!result.value) {
     return null
@@ -212,6 +239,17 @@ function scrollToSection(sectionId: string) {
   window.history.replaceState(null, '', `#${sectionId}`)
   target.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
+
+function viewMatchedCharacter(characterId: string) {
+  void router.push({
+    path: '/result',
+    query: { character: characterId },
+  })
+
+  if (typeof window !== 'undefined') {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+}
 </script>
 
 <template>
@@ -230,7 +268,8 @@ function scrollToSection(sectionId: string) {
           <div class="hero-metrics">
             <div class="hero-metric">
               <span>{{ t('result.rarity') }}</span>
-              <strong>{{ displayProbability }}%</strong>
+              <strong>{{ rarityTierLabel }}</strong>
+              <small>{{ rarityRankLabel }}</small>
             </div>
             <div class="hero-metric">
               <span>{{ t('result.match') }}</span>
@@ -299,7 +338,13 @@ function scrollToSection(sectionId: string) {
           </div>
 
           <div class="similar-characters-grid">
-            <article v-for="match in secondaryCharacterMatches" :key="match.character.id" class="similar-character-card">
+            <RouterLink
+              v-for="match in secondaryCharacterMatches"
+              :key="match.character.id"
+              :to="{ path: '/result', query: { character: match.character.id } }"
+              class="similar-character-card"
+              @click.prevent="viewMatchedCharacter(match.character.id)"
+            >
               <div class="similar-character-head">
                 <div>
                   <p class="similar-character-rank">{{ t('result.otherMatchesLabel', undefined, '高匹配候选') }}</p>
@@ -316,7 +361,7 @@ function scrollToSection(sectionId: string) {
               <p class="similar-character-note">
                 {{ isHiddenCharacter(match.character) ? getHiddenCharacterNote(locale, match.character) : t('characters.' + match.character.id + '.note', undefined, match.character.note) }}
               </p>
-            </article>
+            </RouterLink>
           </div>
         </section>
 
@@ -424,7 +469,9 @@ function scrollToSection(sectionId: string) {
           <h3>{{ primaryCharacter ? getLocalizedCharacterName(primaryCharacter, locale, { revealHidden: true }) : t('archetypes.' + result.archetype.id + '.name', undefined, result.archetype.name) }}</h3>
           <p v-if="primaryCharacter && isHiddenCharacter(primaryCharacter)" class="profile-hidden-flag">{{ getHiddenCharacterTitle(locale, primaryCharacter) }}</p>
           <p class="profile-code">{{ displayCode }}</p>
-          <p class="profile-probability">{{ t('result.matchProbability', { value: displayProbability }) }}</p>
+          <p class="profile-rarity">{{ rarityTierLabel }}</p>
+          <p class="profile-probability">{{ rarityRankLabel }}</p>
+          <p class="profile-probability">{{ probabilityLabel }}</p>
         </div>
 
         <div class="sidebar-card nav-card">
@@ -609,6 +656,14 @@ function scrollToSection(sectionId: string) {
   line-height: 1;
 }
 
+.hero-metric small {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0.86;
+}
+
 .hero-actions {
   display: flex;
   gap: 16px;
@@ -787,6 +842,16 @@ function scrollToSection(sectionId: string) {
   border-radius: 18px;
   padding: 20px 22px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.similar-character-card:hover {
+  transform: translateY(-3px);
+  border-color: #cfe4db;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
 }
 
 .similar-character-head {
@@ -1102,8 +1167,15 @@ function scrollToSection(sectionId: string) {
   text-transform: uppercase;
 }
 
-.profile-probability {
+.profile-rarity {
   margin: 10px 0 0;
+  color: #2f3a45;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.profile-probability {
+  margin: 6px 0 0;
   color: #5f6b75;
   font-size: 14px;
   font-weight: 700;
