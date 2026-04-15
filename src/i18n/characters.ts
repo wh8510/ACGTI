@@ -393,7 +393,7 @@ const characterNameI18n: Record<string, LocalizedText> = {
     'zh-TW': '桃金娘',
     en: 'Myrtle',
     ja: 'テンニンカ',
-  }
+  },
   'vertin': {
     'zh-CN': '维尔汀',
     'zh-TW': '維爾汀',

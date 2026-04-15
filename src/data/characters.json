@@ -2519,13 +2519,12 @@
         "aura": 2
       }
     }
-  }
   },
   {
     "id": "vertin",
     "name": "维尔汀",
     "series": "重返未来:1999",
-    "image": "/images/characters/维尔汀.png",
+    "image": "/images/characters/维尔汀.webp",
     "matchCode": "INTP",
     "matchCodeFlex": ["INTJ", "ISTP"],
     "code": "VRTN",
